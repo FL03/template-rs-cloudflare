@@ -9,7 +9,7 @@
   "version": "0.0.0",
   "scripts": {
     "build": "worker-build --release",
-    "deploy": "wrangler deploy",
+    "deploy": "npx wrangler deploy",
     "dev": "npx wrangler dev",
     "cargo:install": "cargo install --locked wasm-pack worker-build"
   },

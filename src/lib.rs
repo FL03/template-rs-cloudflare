@@ -2,28 +2,28 @@
     Appellation: template-rs-cloudflare <library>
     Contrib: FL03 <jo3mccain@icloud.com>
 */
-use axum::{routing::get, Router};
+use axum::{body, http, routing::get};
 use tower_service::Service;
 use worker::*;
 
-fn router() -> Router {
-    Router::new().route("/", get(root))
-}
-
-#[event(fetch)]
+#[worker::event(fetch)]
 async fn fetch(
-    req: HttpRequest,
-    _env: Env,
-    _ctx: Context,
-) -> Result<axum::http::Response<axum::body::Body>> {
+    req: worker::HttpRequest,
+    _env: worker::Env,
+    _ctx: worker::Context,
+) -> Result<http::Response<body::Body>> {
     #[cfg(target_family = "wasm")]
     console_error_panic_hook::set_once();
     Ok(router().call(req).await?)
 }
 
+fn router() -> axum::Router {
+    axum::Router::new().route("/", get(root))
+}
+
 pub async fn root() -> &'static str {
     let message = Message::new("Hello, World!");
-    console_log!("{}", message);
+    worker::console_log!("{message}");
     "Hello, World!"
 }
 
