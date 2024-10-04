@@ -3,15 +3,18 @@
     Contrib: FL03 <jo3mccain@icloud.com>
 */
 
-
-#[derive(Clone, Default, Eq, Hash, Ord, PartialEq, PartialOrd, serde::Deserialize, serde::Serialize)]
+#[derive(
+    Clone, Default, Eq, Hash, Ord, PartialEq, PartialOrd, serde::Deserialize, serde::Serialize,
+)]
 pub struct Message {
     message: String,
 }
 
 impl Message {
     pub fn new(message: impl ToString) -> Self {
-        Self { message: message.to_string() }
+        Self {
+            message: message.to_string(),
+        }
     }
 
     pub fn as_axum_json(&self) -> axum::Json<Self> {

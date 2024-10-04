@@ -9,7 +9,6 @@ pub fn router() -> axum::Router {
     axum::Router::new().route("/", get(root))
 }
 
-
 async fn root() -> Json<Message> {
     let message = Message::new("Hello, World!");
     worker::console_log!("{message}");
