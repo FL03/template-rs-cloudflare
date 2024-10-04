@@ -1,9 +1,7 @@
-# pzzld-server
+# template-rs-cloudflare
 
-[![clippy](https://github.com/FL03/pzzld-server/actions/workflows/clippy.yml/badge.svg)](https://github.com/FL03/pzzld-server/actions/workflows/clippy.yml)
-[![rust](https://github.com/FL03/pzzld-server/actions/workflows/rust.yml/badge.svg)](https://github.com/FL03/pzzld-server/actions/workflows/rust.yml)
-
-[![docker](https://github.com/FL03/pzzld-server/actions/workflows/docker.yml/badge.svg)](https://github.com/FL03/pzzld-server/actions/workflows/docker.yml)
+[![clippy](https://github.com/FL03/pzzld-server/actions/workflows/clippy.yml/badge.svg)](https://github.com/FL03/template-rs-cloudflare/actions/workflows/clippy.yml)
+[![rust](https://github.com/FL03/pzzld-server/actions/workflows/rust.yml/badge.svg)](https://github.com/FL03/template-rs-cloudflare/actions/workflows/rust.yml)
 
 ***
 
@@ -22,8 +20,8 @@ A server optimized for WASM applications
 Start by cloning the repository
 
 ```bash
-git clone https://github.com/FL03/pzzld-server.git
-cd pzzld-server
+git clone https://github.com/FL03/template-rs-cloudflare.git
+cd template-rs-cloudflare
 ```
 
 #### _Building the project_
@@ -43,7 +41,7 @@ cargo test --all-features -r -v --workspace
 ### Installation
 
 ```bash
-cargo install pzzld-server
+cargo install --locked wasm-pack worker-build
 ```
 
 ### Running the server

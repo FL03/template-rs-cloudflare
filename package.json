@@ -1,0 +1,20 @@
+{
+  "author": {
+    "email": "j3mccain@gmail.com",
+    "name": "Joe McCain III",
+    "url": "https://github.com/FL03"
+  },
+  "keywords": ["cloudflare", "template"],
+  "name": "@templates/workers-rs",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "worker-build --release",
+    "deploy": "wrangler deploy",
+    "dev": "npx wrangler dev",
+    "cargo:install": "cargo install --locked wasm-pack worker-build"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "cloudflare": "latest"
+  }
+}

@@ -14,4 +14,4 @@ name = "worker-staging"
 route = { pattern = "stag.scattered-systems.com/*", zone_name = "scattered-systems.com" }
 
 [build]
-command = "cargo install -q worker-build && worker-build --release"
+command = "npm run build"

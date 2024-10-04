@@ -1,14 +1,6 @@
-# Artifacts
+# Development
 
-**/.artifacts/data/
-**/.docker/data/
-
-
-## Caches
-
-**/.cache/
-
-# Configuration Files
+## Configuration Files
 **/.config/*.config.*
 
 **/*.env
@@ -27,49 +19,18 @@
 !**/example.env
 !**/example.env.*
 
-# Dev
+## IDE's
+
+### Atom
+**/.atom/
 
 ### Idea
-
 **/.idea/
 
 ### vscode
-
 **/.vscode/
 
-# File Extensions
-
-**/*.lock
-**/*.lock.*
-
-**/*-lock.*
-
-**/*.log
-**/*.log.*
-
-### Data Files
-
-**/*.csv
-**/*.csv.*
-
-**/*.db
-**/*.db.*
-
-**/*.db-*.*
-
-**/*.zip
-**/*.zip.*
-
-
-
-## Rust
-**/debug/
-**/target/
-
-**/*.bk
-**/*.bk.*
-
-**/Cargo.lock
+# Language Specific
 
 ## Node
 **/build/
@@ -106,3 +67,44 @@
 
 **/*.whl
 **/*.whl.*
+
+## Rust
+**/debug/
+**/target/
+
+**/*.bk
+**/*.bk.*
+
+**/Cargo.lock
+
+
+# Miscellaneous
+
+## File Extensions
+
+**/*.lock
+**/*.lock.*
+
+**/*-lock.*
+
+**/*.log
+**/*.log.*
+
+### Windows
+
+#### WSL
+
+**/:Zone.Identifier
+
+### Data Files
+
+**/*.csv
+**/*.csv.*
+
+**/*.db
+**/*.db.*
+
+**/*.db-*.*
+
+**/*.zip
+**/*.zip.*
