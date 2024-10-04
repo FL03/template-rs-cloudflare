@@ -1,0 +1,14 @@
+[package]
+edition = "2021"
+name = "template-rs-cloudflare"
+version = "0.1.0"
+
+[dependencies]
+
+[dependencies.serde]
+features = ["derive"]
+version = "1"
+
+[dependencies.worker]
+features = []
+version = "0.4.1"
