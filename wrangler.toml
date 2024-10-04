@@ -1,0 +1,17 @@
+# Top-level configuration
+compatibility_date = "2024-10-04"
+main = "build/worker/shim.mjs"
+name = "template-rs-cloudflare"
+
+workers_dev = false
+
+[route]
+pattern = "worker.scattered-systems.com/*"
+zone_name = "scattered-systems.com"
+
+[env.staging]
+name = "worker-staging"
+route = { pattern = "stag.scattered-systems.com/*", zone_name = "scattered-systems.com" }
+
+[build]
+command = "cargo install -q worker-build && worker-build --release"
