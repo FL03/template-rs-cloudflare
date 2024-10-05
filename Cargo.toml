@@ -11,12 +11,21 @@ version = "0.0.0"
 
 [features]
 default = [
-
 ]
 
 full = [
-
+    "default",
 ]
+
+# ********* [FF] Dependencies *********
+
+
+# ********* [FF] Environments *********
+std = []
+
+wasi = []
+
+wasm = []
 
 [lib]
 bench = false
@@ -29,12 +38,16 @@ test = true
 [dev-dependencies]
 
 [dependencies]
+rand = "0.8"
 serde_json = "1"
 tower-service = "0.3"
 
 [dependencies.axum]
 default-features = false
-features = ["json", "macros"]
+features = [
+    "json", 
+    "macros"
+]
 version = "0.7"
 
 [dependencies.chrono]
@@ -43,6 +56,14 @@ version = "0.4"
 
 [dependencies.serde]
 features = ["derive"]
+version = "1"
+
+[dependencies.strum]
+features = ["derive"]
+version = "0.26"
+
+[dependencies.uuid]
+features = ["js", "serde", "v4"]
 version = "1"
 
 [dependencies.worker]
@@ -58,6 +79,7 @@ version = "0.4"
 
 [target.wasm32-unknown-unknown.dependencies]
 console_error_panic_hook = "0.1"
+getrandom = { features = ["js"], version = "0.2" }
 
 [package.metadata.wasm-pack.profile.release]
 wasm-opt = false
