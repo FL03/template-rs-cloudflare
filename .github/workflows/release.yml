@@ -30,5 +30,6 @@ jobs:
         name: setup wrangler
         run: cargo install --locked wasm-pack worker-build
       - 
+        if: github.event_name == 'release'
         name: production 
-        run: npx wrangler deploy --env production --minify
+        run: npx wrangler deploy --minify

@@ -11,13 +11,6 @@ command = "worker-build --release"
 pattern = "worker.scattered-systems.com"
 zone_name = "scattered-systems.com"
 
-# ********* [Env] Production *********
-[env.production]
-name = "worker"
-
-[env.production.route]
-pattern = "worker.scattered-systems.com/api/*"
-zone_name = "scattered-systems.com"
 
 # ********* [Env] Staging *********
 [env.staging]
