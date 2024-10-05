@@ -2,12 +2,17 @@
     Appellation: template-rs-cloudflare <library>
     Contrib: FL03 <jo3mccain@icloud.com>
 */
-//!
+//! # template-rs-cloudflare
 //!
 //!
 #[doc(inline)]
 pub use self::types::prelude::*;
 
+#[macro_use]
+pub(crate) mod macros;
+
+pub mod app;
+pub mod data;
 pub mod routes;
 pub mod types;
 
@@ -19,5 +24,5 @@ async fn fetch(req: worker::HttpRequest, _env: Env, _ctx: Context) -> Result<Bod
 
     #[cfg(target_family = "wasm")]
     console_error_panic_hook::set_once();
-    Ok(routes::app().call(req).await?)
+    Ok(routes::router().call(req).await?)
 }

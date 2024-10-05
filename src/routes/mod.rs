@@ -12,7 +12,7 @@ use axum::Router;
 /// [app] is the primary router for the application;
 ///
 ///
-pub fn app<S>() -> Router<S>
+pub fn router<S>() -> Router<S>
 where
     S: Clone + Send + Sync + 'static,
 {
@@ -21,22 +21,3 @@ where
     //     StatusInRangeAsFailures::new(400..=599).into_make_classifier(),
     // ))
 }
-
-#[derive(
-    Clone,
-    Copy,
-    Debug,
-    Default,
-    Eq,
-    Hash,
-    Ord,
-    PartialEq,
-    PartialOrd,
-    serde::Deserialize,
-    serde::Serialize,
-)]
-pub struct AppCtx {}
-
-unsafe impl Send for AppCtx {}
-
-unsafe impl Sync for AppCtx {}

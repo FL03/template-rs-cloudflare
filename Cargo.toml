@@ -11,6 +11,7 @@ version = "0.0.0"
 
 [features]
 default = [
+    "wasm",
 ]
 
 full = [
@@ -38,6 +39,8 @@ test = true
 [dev-dependencies]
 
 [dependencies]
+anyhow = "1"
+paste = "1"
 rand = "0.8"
 serde_json = "1"
 tower-service = "0.3"
