@@ -4,13 +4,25 @@ name = "template-rs-cloudflare"
 
 workers_dev = false
 
-[route]
-pattern = "worker.scattered-systems.com/*"
-zone_name = "scattered-systems.com"
-
-[env.staging]
-name = "worker-staging"
-route = { pattern = "staging.scattered-systems.com/*", zone_name = "scattered-systems.com" }
-
 [build]
 command = "worker-build --release"
+
+[route]
+pattern = "worker.scattered-systems.com"
+zone_name = "scattered-systems.com"
+
+# ********* [Env] Production *********
+[env.production]
+name = "worker"
+
+[env.production.route]
+pattern = "worker.scattered-systems.com/api/*"
+zone_name = "scattered-systems.com"
+
+# ********* [Env] Staging *********
+[env.staging]
+name = "worker-staging"
+
+[env.staging.route]
+pattern = "staging.scattered-systems.com"
+zone_name = "scattered-systems.com"
