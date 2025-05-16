@@ -8,11 +8,11 @@
   "name": "@pzzld/template-rs-cloudflare",
   "version": "0.0.0",
   "scripts": {
-    "preinstall": "npm run cargo:preinstall",
+    "setup": "npm run cargo:setup",
     "build": "npm run worker:build",
     "deploy": "npm run cf:deploy",
     "dev": "npm run cf:dev",
-    "cargo:preinstall": "cargo binstall wasm-pack worker-build -y",
+    "cargo:setup": "cargo install cargo-binstall && cargo binstall wasm-pack worker-build -y",
     "cf:build": "npx wrangler build",
     "cf:deploy": "npx wrangler deploy",
     "cf:dev": "npx wrangler dev",
