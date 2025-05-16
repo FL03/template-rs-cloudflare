@@ -81,11 +81,6 @@ json = [
     "axum/json",
 ]
 
-rng = [
-    "dep:getrandom",
-    "uuid?/v4",
-]
-
 time = ["dep:time"]
 
 tokio = ["dep:tokio"]
@@ -108,7 +103,6 @@ uuid = [ "dep:uuid" ]
 wasi = []
 
 wasm = [
-    "getrandom?/wasm_js",
     "uuid?/js",
 ]
 
@@ -128,15 +122,12 @@ thiserror = { version = "2" }
 # logging
 tracing = { features = ["attributes", "log"], optional = true, version = "0.1" }
 # randomization
-getrandom = { optional = true, version = "0.3" }
-rand = { optional = true, version = "0.9" }
-rand_distr = { optional = true, version = "0.5" }
 uuid = { features = ["serde"], optional = true, version = "1" }
 # middleware & networking
 tower = { features = [], optional = true, version = "0.5" }
 tower-http = { features = [], optional = true, version = "0.6" }
 tower-service = { version =  "0.3" }
-url = { version = "1" }
+url = { version = "2" }
 # macros
 paste = "1"
 smart-default = { version = "0.7" }
@@ -150,6 +141,7 @@ worker-macros = { features = ["http"], optional = true, version = "0.5" }
 
 [target.wasm32-unknown-unknown.dependencies]
 console_error_panic_hook = "0.1"
+
 
 [profile.dev]
 codegen-units = 16
