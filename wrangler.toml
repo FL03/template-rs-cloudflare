@@ -21,3 +21,7 @@ name = "worker-staging"
 [env.staging.route]
 pattern = "stag.scsys.io"
 zone_name = "scsys.io"
+
+# ************* [Environment variables] *************
+[vars]
+# Add your environment variables here
