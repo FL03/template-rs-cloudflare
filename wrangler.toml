@@ -11,7 +11,6 @@ command = "worker-build --release"
 pattern = "worker.scsys.io"
 zone_name = "scsys.io"
 
-
 # ********* [Env] Staging *********
 [env.staging]
 name = "worker-staging"
