@@ -9,6 +9,7 @@
   "version": "0.0.0",
   "scripts": {
     "preinstall": "npm run cargo:preinstall",
+    "build": "npm run worker:build",
     "deploy": "npm run cf:deploy",
     "dev": "npm run cf:dev",
     "cargo:preinstall": "cargo binstall wasm-pack worker-build -y",
