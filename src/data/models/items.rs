@@ -26,9 +26,10 @@ pub struct ItemModel {
 }
 impl ItemModel {
     pub fn new() -> Self {
+        let id = crate::generate_id();
         let created_at = crate::systime();
         Self {
-            id: uuid::Uuid::new_v4(),
+            id,
             description: String::new(),
             title: String::new(),
             created_at,
@@ -36,58 +37,12 @@ impl ItemModel {
     }
 
     gsw! {
-        id: ItemId,
         created_at: Timestamp,
     }
 
     gsw! {
         description: &String,
+        id: &ItemId,
         title: &String,
-    }
-}
-
-pub struct ItemBuilder {
-    id: Option<ItemId>,
-    description: Option<String>,
-    title: Option<String>,
-}
-
-impl ItemBuilder {
-    pub fn new() -> Self {
-        Self {
-            id: None,
-            description: None,
-            title: None,
-        }
-    }
-
-    pub fn description(self, description: impl ToString) -> Self {
-        Self {
-            description: Some(description.to_string()),
-            ..self
-        }
-    }
-
-    pub fn id(self, id: ItemId) -> Self {
-        Self {
-            id: Some(id),
-            ..self
-        }
-    }
-
-    pub fn title(self, title: impl ToString) -> Self {
-        Self {
-            title: Some(title.to_string()),
-            ..self
-        }
-    }
-
-    pub fn build(self) -> ItemModel {
-        ItemModel {
-            id: self.id.unwrap_or_else(uuid::Uuid::new_v4),
-            description: self.description.unwrap_or_default(),
-            title: self.title.unwrap_or_default(),
-            created_at: crate::systime(),
-        }
     }
 }

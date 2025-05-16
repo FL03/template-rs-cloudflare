@@ -71,6 +71,11 @@
 
 !**/Cargo.lock
 
+### wasm-pack
+**/.wasm-pack/
+**/pkg/
+
+
 ## Node
 **/build/
 **/debug/

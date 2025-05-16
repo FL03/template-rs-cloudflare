@@ -23,25 +23,27 @@ full = [
     "default",
     "chrono",
     "rand",
+    "tracing",
+    "uuid",
 ]
 
-app = [
-    "full"
-]
-
-# ********* [FF] Dependencies *********
-
+# ************* [FF:Dependencies] *************
 cf = [
     "dep:worker",
     "dep:worker-macros",
 ]
 
-chrono = [ 
-    "dep:chrono",
-    "time"
-]
+chrono = ["dep:chrono"]
 
 config = ["dep:config"]
+
+http1 = [
+    "axum/http1"
+]
+
+http2 = [
+    "axum/http2"
+]
 
 json = [
     "dep:serde_json",
@@ -49,6 +51,8 @@ json = [
 ]
 
 rand = [
+    "dep:rand",
+    "dep:rand_distr",
     "uuid?/v4",
     "rng"
 ]
@@ -57,12 +61,14 @@ rng = [
     "dep:getrandom"
 ]
 
-time = [
-    "dep:time",
-]
+time = ["dep:time"]
+
+tracing = ["dep:tracing"]
 
 uuid = [
     "dep:uuid",
+    "uuid?/v3",
+    "uuid?/v5",
 ]
 
 # ************* [FF:Environments] *************
@@ -82,9 +88,7 @@ test = true
 [dependencies]
 config = { optional = true, version = "0.15" }
 # api
-axum = { features = ["macros"], version = "0.8" }
-# middleware & networking
-tower-service = { version =  "0.3" }
+axum = { default-features = false, features = ["macros"], version = "0.8" }
 # data & serialization
 bytes = { features = ["serde"], version = "1" }
 serde = { features = ["derive"], version = "1" }
@@ -93,6 +97,16 @@ serde_json = { optional = true, version = "1" }
 # error handling
 anyhow ={ version = "1" }
 thiserror = { version = "2" }
+# logging
+tracing = { features = ["attributes", "log"], optional = true, version = "0.1" }
+# randomization
+getrandom = { optional = true, version = "0.3" }
+rand = { optional = true, version = "0.9" }
+rand_distr = { optional = true, version = "0.5" }
+uuid = { features = ["serde"], optional = true, version = "1" }
+# middleware & networking
+tower-service = { version =  "0.3" }
+url = { version = "1" }
 # macros
 paste = "1"
 smart-default = { version = "0.7" }
@@ -100,10 +114,6 @@ strum = { features = ["derive"], version = "0.27" }
 # time
 chrono = { features = ["serde"], optional = true, version = "0.4" }
 time = { features = ["serde"], optional = true, version = "0.3" }
-# randomization
-getrandom = { optional = true, version = "0.3" }
-uuid = { features = ["serde"], optional = true, version = "1" }
-
 # cloudflare
 worker = { features = ["axum", "http"], optional = true, version = "0.5" }
 worker-macros = { features = ["http"], optional = true, version = "0.5" }

@@ -43,8 +43,8 @@ pub mod types {
         pub type BodyResponse = axum::http::Response<axum::body::Body>;
         /// a type alias for a numerical timestamp
         pub type Timestamp = u128;
-
-        pub type ItemId = uuid::Uuid;
+        /// a type alias for all model IDs
+        pub type ItemId = String;
         /// a type alias for database-compatible timestamps
         pub type BigInt = i64;
 
@@ -57,10 +57,12 @@ pub mod utils {
     #[doc(inline)]
     pub use self::prelude::*;
 
-    // pub mod signals;
+    pub mod generate;
     pub mod time;
 
     pub(crate) mod prelude {
+        #[doc(inline)]
+        pub use super::generate::*;
         #[doc(inline)]
         pub use super::time::*;
     }

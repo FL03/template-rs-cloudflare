@@ -14,8 +14,8 @@
       in
       {
         packages.default = rustPlatform.buildRustPackage {
-          pname = "vaulted";
-          version = "0.2.0";
+          pname = "template-rs-cloudflare";
+          version = "0.0.0";
           src = "./.";
           # If Cargo.lock doesn't exist yet, remove or comment out this block:
           cargoLock = {
@@ -31,6 +31,9 @@
             pkgs.cargo-nextest
             pkgs.clippy
             pkgs.rustfmt
+            pkgs.rust-analyzer
+            pkgs.wasm-pack
+            pkgs.worker-build
           ];
           shellHook = ''
             echo "Welcome to the dev shell!"

@@ -48,9 +48,3 @@ impl Mode {
         Self::Staging
     }
 }
-
-impl From<Mode> for config::Value {
-    fn from(mode: Mode) -> Self {
-        mode.to_string().into()
-    }
-}
