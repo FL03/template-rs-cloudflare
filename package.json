@@ -4,8 +4,19 @@
     "name": "Joe McCain III",
     "url": "https://github.com/FL03"
   },
+  "engines": {
+    "node": ">=22",
+    "npm": ">=10"
+  },
   "keywords": ["cloudflare", "template"],
+  "license": "Apache-2.0",
+  "main": "build/index.js",
   "name": "@pzzld/template-rs-cloudflare",
+  "readme": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FL03/template-rs-cloudflare.git"
+  },
   "version": "0.0.0",
   "scripts": {
     "setup": "npm run cargo:setup",
@@ -16,7 +27,7 @@
     "cf:build": "npx wrangler build",
     "cf:deploy": "npx wrangler deploy",
     "cf:dev": "npx wrangler dev",
-    "wasm-pack:build": "wasm-pack build --target web --release",
-    "worker:build": "worker-build --release"
+    "wasm-pack:build": "wasm-pack build --target web --release -d .artifacts/js",
+    "worker:build": "worker-build --release -d dist"
   }
 }

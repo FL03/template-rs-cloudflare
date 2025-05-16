@@ -1,15 +1,38 @@
 [package]
-authors = ["FL03 <jo3mccain@icloud.com>"]
+authors = [
+    "FL03 <jo3mccain@icloud.com>",
+    "Scattered-Systems, LLC <support@scsys.io>"
+]
+default-run = "rscloud"
 description = "A template worker application for Clouflare Workers"
 edition = "2024"
 keywords = ["axum", "cloudflare", "template", "wasm"]
 license = "Apache-2.0"
 name = "template-rs-cloudflare"
-publish = false
+publish = true
+readme = "README.md"
 repository = "https://github.com/FL03/template-rs-cloudflare.git"
+resolver = "3"
 version = "0.0.0"
 
-resolver = "3"
+[package.metadata.docs.rs]
+all-features = false
+features = ["default"]
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false
+
+[[bin]]
+name = "rscloud"
+path = "bin/main.rs"
+
+[lib]
+bench = false
+crate-type = ["cdylib", "rlib"]
+name = "sdk"
+path = "src/lib.rs"
+doctest = false
+test = true
 
 [features]
 default = [
@@ -63,7 +86,13 @@ rng = [
 
 time = ["dep:time"]
 
-tracing = ["dep:tracing"]
+tokio = ["dep:tokio"]
+
+tracing = [
+    "dep:tracing",
+    "axum/tracing",
+    "tokio?/tracing",
+]
 
 uuid = [
     "dep:uuid",
@@ -79,16 +108,13 @@ wasm = [
     "uuid?/js",
 ]
 
-[lib]
-bench = false
-crate-type = ["cdylib", "rlib"]
-doctest = false
-test = true
+
 
 [dependencies]
 config = { optional = true, version = "0.15" }
 # api
-axum = { default-features = false, features = ["macros"], version = "0.8" }
+axum = { default-features = false, features = ["macros", "query"], version = "0.8" }
+tokio = { features = [], optional = true, version = "1" }
 # data & serialization
 bytes = { features = ["serde"], version = "1" }
 serde = { features = ["derive"], version = "1" }
@@ -105,8 +131,10 @@ rand = { optional = true, version = "0.9" }
 rand_distr = { optional = true, version = "0.5" }
 uuid = { features = ["serde"], optional = true, version = "1" }
 # middleware & networking
+tower = { features = [], version = "0.4" }
+tower-http = { features = ["compression-full", "cors", "trace"], version = "0.6" }
 tower-service = { version =  "0.3" }
-url = { version = "1" }
+url = { version = "2" }
 # macros
 paste = "1"
 smart-default = { version = "0.7" }
@@ -121,10 +149,20 @@ worker-macros = { features = ["http"], optional = true, version = "0.5" }
 [target.wasm32-unknown-unknown.dependencies]
 console_error_panic_hook = "0.1"
 
-[package.metadata.wasm-pack.profile.release]
-wasm-opt = false
+[profile.dev]
+codegen-units = 16
+debug = true
+lto = true
+opt-level = 2
+overflow-checks = true
+panic = "unwind"
+strip = true
 
 [profile.release]
 codegen-units = 1
+debug = false
 lto = true
+opt-level = "z"
+overflow-checks = false
+panic = "abort"
 strip = true

@@ -1,8 +1,16 @@
 **/.vault/
 
 # Artifacts
-
+**/.artifacts/build/
+**/.artifacts/cache/
 **/.artifacts/data/
+**/.artifacts/deps/
+**/.artifacts/logs/
+**/.artifacts/tmp/
+
+**/.artifacts/js/
+**/.artifacts/wasm/
+
 **/.docker/data/
 
 ## Caches
@@ -10,20 +18,15 @@
 **/.cache/
 
 # Configuration Files
-
-**/config.*
-**/*.config.*
+**/.config/
+**/.config/*.config.*
+**/.config/*.toml
 
 **/*.env
 **/*.env.*
 
 ### Exceptions
 !**/default.config.*
-!**/*.config.cjs
-!**/*.config.js
-!**/*.config.mjs
-!**/config.py
-!**/config.rs
 
 !**/example.env.*
 !**/*.env.example
@@ -41,10 +44,10 @@
 
 # File Extensions
 
-**/*.lock
-**/*.lock.*
+!**/*.lock
+!**/*.lock.*
 
-**/*-lock.*
+!**/*-lock.*
 
 **/*.log
 **/*.log.*

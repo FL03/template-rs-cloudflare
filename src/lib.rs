@@ -16,13 +16,17 @@ pub(crate) mod macros {
 
 #[doc(inline)]
 pub use self::{
-    app::{ApiContext, ApiSettings},
+    app::{api, ApiContext, ApiSettings},
+    error::*,
     types::prelude::*,
     utils::prelude::*,
 };
+#[cfg(feature = "cf")]
+pub use self::cf::*;
 
 pub mod app;
 pub mod data;
+pub mod error;
 
 pub mod types {
     #[doc(inline)]
@@ -79,18 +83,19 @@ pub mod prelude {
     pub use crate::utils::prelude::*;
 }
 
-use worker::{Env, Result};
 
 #[cfg(feature = "cf")]
-#[worker::event(fetch)]
-pub async fn fetch(
-    req: worker::HttpRequest,
-    _env: Env,
-    _ctx: worker::Context,
-) -> Result<BodyResponse> {
-    use tower_service::Service;
+pub mod cf {
+    #[worker::event(fetch)]
+    pub async fn fetch(
+        req: worker::HttpRequest,
+        _env: worker::Env,
+        _ctx: worker::Context,
+    ) -> worker::Result<crate::BodyResponse> {
+        use tower_service::Service;
 
-    #[cfg(target_family = "wasm")]
-    console_error_panic_hook::set_once();
-    Ok(app::api().call(req).await?)
+        #[cfg(target_family = "wasm")]
+        console_error_panic_hook::set_once();
+        Ok(crate::api().call(req).await?)
+    }
 }
