@@ -5,7 +5,7 @@
     "url": "https://github.com/FL03"
   },
   "keywords": ["cloudflare", "template"],
-  "name": "@templates/template-rs-cloudflare",
+  "name": "@pzzld/template-rs-cloudflare",
   "version": "0.0.0",
   "scripts": {
     "preinstall": "npm run cargo:preinstall",
