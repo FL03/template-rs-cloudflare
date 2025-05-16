@@ -2,7 +2,7 @@
     Appellation: sample <module>
     Contrib: FL03 <jo3mccain@icloud.com>
 */
-use crate::types::aliases::{Timestamp, ItemId};
+use crate::types::aliases::{ItemId, Timestamp};
 
 #[derive(
     Clone,

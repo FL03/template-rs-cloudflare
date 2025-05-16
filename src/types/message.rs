@@ -22,7 +22,6 @@ impl<T> Message<T> {
             data,
             message: message.to_string(),
             timestamp: crate::systime(),
-
         }
     }
     /// returns a new instance constructed from the given message

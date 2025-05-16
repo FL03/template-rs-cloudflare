@@ -3,7 +3,7 @@
     Contrib: FL03 <jo3mccain@icloud.com>
 */
 use crate::Message;
-use axum::{routing::get, Json};
+use axum::{Json, routing::get};
 
 pub fn router() -> axum::Router {
     axum::Router::new().route("/", get(root))

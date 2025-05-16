@@ -14,15 +14,15 @@ pub(crate) mod macros {
     pub(crate) mod seal;
 }
 
+#[cfg(feature = "cf")]
+pub use self::cf::*;
 #[doc(inline)]
 pub use self::{
-    app::{api, ApiContext, ApiSettings},
+    app::{ApiContext, ApiSettings, api},
     error::*,
     types::prelude::*,
     utils::prelude::*,
 };
-#[cfg(feature = "cf")]
-pub use self::cf::*;
 
 pub mod app;
 pub mod data;
@@ -82,7 +82,6 @@ pub mod prelude {
     #[doc(no_inline)]
     pub use crate::utils::prelude::*;
 }
-
 
 #[cfg(feature = "cf")]
 pub mod cf {

@@ -14,4 +14,3 @@ pub(crate) mod prelude {
     #[doc(inline)]
     pub use super::routes::prelude::*;
 }
-

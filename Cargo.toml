@@ -47,7 +47,6 @@ default = [
 full = [
     "default",
     "chrono",
-    "rng",
     "tracing",
     "uuid",
 ]

@@ -1,26 +1,19 @@
-
 #[doc(hidden)]
-pub static ATOMIC_ID: std::sync::atomic::AtomicUsize =
+pub static ROOT_ATOMIC_IDENTIFIER: std::sync::atomic::AtomicUsize =
     std::sync::atomic::AtomicUsize::new(0);
 
-    
-#[cfg(all(feature = "uuid", feature = "rand"))]
+#[cfg(feature = "rand")]
 pub fn generate_id() -> String {
-    uuid::Uuid::new_v4().to_string()
+    use rand::Rng;
+    let mut rng = rand::rng();
+    (0..64)
+        .map(|_| rng.sample(rand::distr::Alphanumeric) as char)
+        .collect::<String>()
 }
 
-#[cfg(all(not(feature = "uuid"), feature = "rand"))]
+#[cfg(not(feature = "rand"))]
 pub fn generate_id() -> String {
-    rand::distributions::Alphanumeric
-        .sample_iter(&mut rand::thread_rng())
-        .take(64)
-        .map(char::from)
-        .collect()
-}
-
-#[cfg(not(all(feature = "uuid", feature = "rand")))]
-pub fn generate_id() -> String {;
-    ATOMIC_ID
+    ROOT_ATOMIC_IDENTIFIER
         .fetch_add(1, std::sync::atomic::Ordering::SeqCst)
         .to_string()
 }
