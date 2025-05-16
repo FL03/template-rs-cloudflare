@@ -85,14 +85,13 @@ pub mod prelude {
 
 #[cfg(feature = "cf")]
 pub mod cf {
-    #[worker::event(fetch)]
-    pub async fn fetch(
-        req: worker::HttpRequest,
-        _env: worker::Env,
-        _ctx: worker::Context,
-    ) -> worker::Result<crate::BodyResponse> {
-        use tower_service::Service;
+    use crate::BodyResponse;
+    use tower_service::Service;
+    use worker::{Context, Env, HttpRequest};
 
+    /// the primary entry point for the worker
+    #[worker::event(fetch)]
+    pub async fn fetch(req: HttpRequest, _env: Env, _ctx: Context) -> worker::Result<BodyResponse> {
         #[cfg(target_family = "wasm")]
         console_error_panic_hook::set_once();
         Ok(crate::api().call(req).await?)

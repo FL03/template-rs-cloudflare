@@ -47,6 +47,7 @@ default = [
 full = [
     "default",
     "chrono",
+    "tower",
     "tracing",
     "uuid",
 ]
@@ -87,17 +88,18 @@ rng = [
 
 time = ["dep:time"]
 
+tokio = ["dep:tokio"]
 
-# tower = [
-#     "dep:tower",
-#     "dep:tower-http",
-# ]
+tower = [
+    "dep:tower",
+    "dep:tower-http",
+]
 
 tracing = [
     "dep:tracing",
     "axum/tracing",
-    # "tokio?/tracing",
-    # "tower-http?/trace",
+    "tokio?/tracing",
+    "tower-http?/trace",
 ]
 
 uuid = [ "dep:uuid" ]
@@ -114,6 +116,7 @@ wasm = [
 config = { optional = true, version = "0.15" }
 # api
 axum = { default-features = false, features = ["macros"], version = "0.8" }
+tokio = { features = [], optional = true, version = "1" }
 # data & serialization
 bytes = { features = ["serde"], version = "1" }
 serde = { features = ["derive"], version = "1" }
@@ -130,6 +133,8 @@ rand = { optional = true, version = "0.9" }
 rand_distr = { optional = true, version = "0.5" }
 uuid = { features = ["serde"], optional = true, version = "1" }
 # middleware & networking
+tower = { features = [], optional = true, version = "0.5" }
+tower-http = { features = [], optional = true, version = "0.6" }
 tower-service = { version =  "0.3" }
 url = { version = "1" }
 # macros
