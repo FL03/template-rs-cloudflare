@@ -7,6 +7,9 @@ workers_dev = false
 [build]
 command = "worker-build --release"
 
+[observability.logs]
+enabled = true
+
 [route]
 pattern = "worker.scsys.io"
 zone_name = "scsys.io"
