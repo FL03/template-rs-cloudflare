@@ -81,16 +81,6 @@ json = [
     "axum/json",
 ]
 
-# rand = [
-#     "dep:rand",
-#     "dep:rand_distr",
-#     "rand?/serde",
-#     "rand?/std",
-#     "rand_distr?/serde",
-#     "rand_distr?/std",
-#     "rng"
-# ]
-
 rng = [
     "dep:getrandom",
     "uuid?/v4",
@@ -99,10 +89,10 @@ rng = [
 time = ["dep:time"]
 
 
-tower = [
-    "dep:tower",
-    "dep:tower-http",
-]
+# tower = [
+#     "dep:tower",
+#     "dep:tower-http",
+# ]
 
 tracing = [
     "dep:tracing",
@@ -124,8 +114,7 @@ wasm = [
 [dependencies]
 config = { optional = true, version = "0.15" }
 # api
-axum = { default-features = false, features = ["macros", "query"], version = "0.8" }
-# tokio = { features = [], optional = true, version = "1" }
+axum = { default-features = false, features = ["macros"], version = "0.8" }
 # data & serialization
 bytes = { features = ["serde"], version = "1" }
 serde = { features = ["derive"], version = "1" }
@@ -138,14 +127,12 @@ thiserror = { version = "2" }
 tracing = { features = ["attributes", "log"], optional = true, version = "0.1" }
 # randomization
 getrandom = { optional = true, version = "0.3" }
-# rand = { default-features = false, features = ["serde", "std"], optional = true, version = "0.9" }
-# rand_distr = { features = ["serde", "std"], optional = true, version = "0.5" }
+rand = { optional = true, version = "0.9" }
+rand_distr = { optional = true, version = "0.5" }
 uuid = { features = ["serde"], optional = true, version = "1" }
 # middleware & networking
-tower = { features = [], optional = true, version = "0.5" }
-tower-http = { features = [], optional = true, version = "0.6" }
 tower-service = { version =  "0.3" }
-url = { version = "2" }
+url = { version = "1" }
 # macros
 paste = "1"
 smart-default = { version = "0.7" }
@@ -159,7 +146,6 @@ worker-macros = { features = ["http"], optional = true, version = "0.5" }
 
 [target.wasm32-unknown-unknown.dependencies]
 console_error_panic_hook = "0.1"
-getrandom = { features = ["wasm_js"], version = "0.3" }
 
 [profile.dev]
 codegen-units = 16
