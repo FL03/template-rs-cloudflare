@@ -2,15 +2,15 @@
     Appellation: context <module>
     Contrib: FL03 <jo3mccain@icloud.com>
 */
-use super::Settings;
+use super::ApiSettings;
 
 #[derive(
     Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, serde::Deserialize, serde::Serialize,
 )]
-pub struct Context {
-    pub(crate) config: Settings,
+pub struct ApiContext {
+    pub(crate) config: ApiSettings,
 }
 
-unsafe impl Send for Context {}
+unsafe impl Send for ApiContext {}
 
-unsafe impl Sync for Context {}
+unsafe impl Sync for ApiContext {}

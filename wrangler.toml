@@ -1,4 +1,4 @@
-compatibility_date = "2024-10-04"
+compatibility_date = "2025-16-05"
 main = "build/worker/shim.mjs"
 name = "template-rs-cloudflare"
 
@@ -8,8 +8,8 @@ workers_dev = false
 command = "worker-build --release"
 
 [route]
-pattern = "worker.scattered-systems.com"
-zone_name = "scattered-systems.com"
+pattern = "worker.scsys.io"
+zone_name = "scsys.io"
 
 
 # ********* [Env] Staging *********
@@ -17,5 +17,5 @@ zone_name = "scattered-systems.com"
 name = "worker-staging"
 
 [env.staging.route]
-pattern = "staging.scattered-systems.com"
-zone_name = "scattered-systems.com"
+pattern = "stag.scsys.io"
+zone_name = "scsys.io"

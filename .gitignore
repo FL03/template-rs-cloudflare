@@ -1,36 +1,75 @@
-# Development
+**/.vault/
 
-## Configuration Files
-**/.config/*.config.*
+# Artifacts
+
+**/.artifacts/data/
+**/.docker/data/
+
+## Caches
+
+**/.cache/
+
+# Configuration Files
+
+**/config.*
+**/*.config.*
 
 **/*.env
 **/*.env.*
 
 ### Exceptions
-!**/.config/default.config.*
-!**/.config/docker.config.*
+!**/default.config.*
+!**/*.config.cjs
+!**/*.config.js
+!**/*.config.mjs
+!**/config.py
+!**/config.rs
 
+!**/example.env.*
 !**/*.env.example
 !**/*.env.default
 
-!**/default.env
-!**/default.env.*
-
-!**/example.env
-!**/example.env.*
-
-## IDE's
-
-### Atom
-**/.atom/
+# Dev
 
 ### Idea
+
 **/.idea/
 
 ### vscode
+
 **/.vscode/
 
-# Language Specific
+# File Extensions
+
+**/*.lock
+**/*.lock.*
+
+**/*-lock.*
+
+**/*.log
+**/*.log.*
+
+### Data Files
+
+**/*.csv
+**/*.csv.*
+
+**/*.db
+**/*.db.*
+
+**/*.db-*.*
+
+**/*.zip
+**/*.zip.*
+
+## Rust
+**/debug/
+**/target/
+
+**/*.bk
+**/*.bk.*
+
+!**/Cargo.lock
 
 ## Node
 **/build/
@@ -68,48 +107,7 @@
 **/*.whl
 **/*.whl.*
 
-## Rust
-**/debug/
-**/target/
-
-**/*.bk
-**/*.bk.*
-
-**/Cargo.lock
-
-### Cloudflare Workers
-**/.wrangler/
-
-# Miscellaneous
-
-## File Extensions
-**/*.csv
-**/*.csv.*
-
-**/*.db
-**/*.db.*
-
-**/*.db-*.*
-
-**/*.lock
-**/*.lock.*
-
-**/*-lock.*
-
-**/*.log
-**/*.log.*
-
-**/*.sqlite
-**/*.sqlite.*
-
-**/*.zip
-**/*.zip.*
-
 ## Operating Systems
 
-### Nix
-!**/flake.lock
-
-### Windows
-#### WSL
+### Windows (WSL2)
 **/*:Zone.Identifier

@@ -1,0 +1,58 @@
+version: "4.0"
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: vaulted
+    restart: unless-stopped
+    networks: [ default, backend ]
+    ports: [ 8080:8080 ]
+    volumes:
+      - ./data:/data
+      - ./config:/config
+    environment:
+      - RUST_LOG="scsys=debug,info"
+      - RUST_BACKTRACE=1
+      - APP_CONFIG=/config/config.toml
+      - APP_MODE=production      
+      - APP_PUBLIC_URL=http://0.0.0.0:8080
+      - APP_PUBLIC_KEY=your_public_key
+      - APP_SECRET_KEY=your_secret_key
+  redis:
+    image: redis:alpine
+    container_name: vaulted_redis
+    restart: unless-stopped
+    networks: [ default, backend ]
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
+volumes:
+  config:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./config
+      o: bind
+  data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./data
+      o: bind
+networks:
+  default:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: vaulted_default
+  backend:
+    # Use a custom driver
+    driver: custom-driver
+  frontend:
+    # Specify driver options
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
+

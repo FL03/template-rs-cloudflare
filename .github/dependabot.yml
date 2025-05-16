@@ -1,11 +1,21 @@
 version: 2
-
 updates:
   - package-ecosystem: cargo
+    schedule:
+      interval: monthly
+    directories:
+      - /
+      - /sdk
+      - /bin/*
+  - package-ecosystem: devcontainers
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
   - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: monthly
+  - package-ecosystem: docker-compose
     directory: /
     schedule:
       interval: monthly

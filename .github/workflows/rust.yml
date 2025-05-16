@@ -6,53 +6,51 @@ concurrency:
 
 env:
   CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: 0
+  RUST_BACKTRACE: 1
 
 on:
-  release:
-    types: [ created ]
+  pull_request:
+    branches: [ main, master, ]
+    types: [ opened, reopened, closed ]
+  push:
+    tags: [ v*, "*-nightly" ]
   repository_dispatch:
     types: [ rust ]
-  schedule:
-    - cron: "30 21 * * 0" # Every Sunday at 9:30pm UTC
   workflow_dispatch:
 
 permissions: write-all
 
 jobs:
   workspace:
-    name: Workspace
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     strategy:
+      fail-fast: false
       matrix:
-        platform: [ ubuntu-latest, ]
-        target: [ wasm32-unknown-unknown, ]
-        toolchain: [ stable, ]
-    runs-on: ${{ matrix.platform }}
+        os:  [ ubuntu-latest, windows-latest, macos-latest ]
+    runs-on: ${{ matrix.os }}
     steps:
       - 
         name: checkout
         uses: actions/checkout@v4
       - 
-        name: rustup
-        run: |
-          rustup default ${{ matrix.toolchain }}
-          rustup target add ${{ matrix.target }}
-          rustup update
-      - 
-        name: build
-        run: cargo build --all-features -r -v --workspace --target ${{ matrix.target }}
-      - 
-        name: test
-        run: cargo test --all-features -v --workspace --target ${{ matrix.target }}
+        name: setup rustup
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          cache-key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          cache-workspaces: true
       - 
         name: cache
-        uses: actions/cache@v4
-        with:
-          key: ${{ runner.os }}-cargo-${{ matrix.toolchain }}-${{ hashFiles('**/Cargo.lock') }}
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target
-          restore-keys: |
-            ${{ runner.os }}-cargo-${{ matrix.toolchain }}-
-            ${{ runner.os }}-cargo-
-            ${{ runner.os }}-
+        uses: Swatinem/rust-cache@v2
+      - 
+        name: build
+        run: cargo build -r --workspace --features full
+      - 
+        name: test
+        run: cargo test -r --workspace --features full
+      - 
+        name: benchmark
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        run: cargo bench -v --workspace --features full
+          

@@ -5,17 +5,14 @@
     "url": "https://github.com/FL03"
   },
   "keywords": ["cloudflare", "template"],
-  "name": "@templates/workers-rs",
+  "name": "@templates/template-rs-cloudflare",
   "version": "0.0.0",
   "scripts": {
     "preinstall": "npm run cargo:install",
     "build": "worker-build --release",
     "deploy": "npx wrangler deploy",
     "dev": "npx wrangler dev",
-    "cargo:install": "cargo install --locked wasm-pack worker-build"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "cloudflare": "latest"
+    "cargo:binstall": "cargo binstall wasm-pack worker-build",
+    "wasm-pack:build": "wasm-pack build --target web --release"
   }
 }

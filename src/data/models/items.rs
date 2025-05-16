@@ -2,7 +2,7 @@
     Appellation: sample <module>
     Contrib: FL03 <jo3mccain@icloud.com>
 */
-use super::{DateT, ItemId, Timezone};
+use crate::types::aliases::{Timestamp, ItemId};
 
 #[derive(
     Clone,
@@ -19,44 +19,30 @@ use super::{DateT, ItemId, Timezone};
 #[serde(default, rename_all = "snake_case")]
 // #[sqlx(default, rename_all = "snake_case")]
 pub struct ItemModel {
-    #[serde(default = "uuid::Uuid::new_v4")]
     pub id: ItemId,
     pub title: String,
     pub description: String,
-    #[serde(default = "chrono::Local::now")]
-    pub created_at: DateT,
+    pub created_at: Timestamp,
 }
-
 impl ItemModel {
     pub fn new() -> Self {
+        let created_at = crate::systime();
         Self {
             id: uuid::Uuid::new_v4(),
             description: String::new(),
             title: String::new(),
-            created_at: Timezone::now(),
+            created_at,
         }
     }
 
-    setwith! {
-        description: String,
+    gsw! {
         id: ItemId,
-        title: String,
+        created_at: Timestamp,
     }
 
-    pub fn description(&self) -> &str {
-        &self.description
-    }
-
-    pub fn id(&self) -> ItemId {
-        self.id
-    }
-
-    pub fn title(&self) -> &str {
-        &self.title
-    }
-
-    pub fn created_at(&self) -> DateT {
-        self.created_at
+    gsw! {
+        description: &String,
+        title: &String,
     }
 }
 
@@ -101,7 +87,7 @@ impl ItemBuilder {
             id: self.id.unwrap_or_else(uuid::Uuid::new_v4),
             description: self.description.unwrap_or_default(),
             title: self.title.unwrap_or_default(),
-            created_at: Timezone::now(),
+            created_at: crate::systime(),
         }
     }
 }

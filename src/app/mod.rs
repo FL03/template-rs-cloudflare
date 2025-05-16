@@ -3,13 +3,14 @@
     Contrib: FL03 <jo3mccain@icloud.com>
 */
 #[doc(inline)]
-pub use self::{config::Settings, context::Context};
+pub use self::prelude::*;
 
 pub mod config;
-pub mod context;
+pub mod routes;
 
-#[allow(unused)]
 pub(crate) mod prelude {
-    pub use super::config::Settings;
-    pub use super::context::Context;
+    #[doc(inline)]
+    pub use super::config::prelude::*;
+    #[doc(inline)]
+    pub use super::routes::prelude::*;
 }
