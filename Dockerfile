@@ -15,6 +15,8 @@ RUN apt-get install -y \
     libopenblas-dev \
     libssl-dev \
     libsqlite3-dev \
+    nodejs \
+    npm \
     pkg-config
 # update any toolchains
 RUN rustup update
@@ -36,29 +38,13 @@ RUN --mount=type=cache,target=/workspace/target/ \
     cargo build --locked --release --all-features --workspace --target wasm32-unknown-unknown
 # ************** STAGE 2 **************
 # production-base: A slim base image capable of running the application
-FROM debian:bookworm-slim AS runner-base
-# update and upgrade the system
-RUN apt-get update -y && \
-    apt-get upgrade -y
-# install the required system dependencies
-RUN apt-get install -y \
-    libsqlite3-dev
-# create a user and group
-RUN groupadd -g 10001 agroup && \
-    useradd -m -u 10001 -g agroup auser
-# switch to the user
-USER auser
-
+FROM scratch AS runner-base
+#
 # copy the binary to the system
-COPY --from=builder --chown=auser:agroup /app/target/release/rscloud /usr/local/bin/rscloud
+COPY --from=builder --chown=auser:agroup /app/target/wasm32-unknown-unknown/release/rscloud /opt/rscloud
 # copy the configuration files
 COPY --from=builder --chown=auser:agroup --chmod=755 --link /app/.config /opt/rscloud/.config
 COPY --from=builder --chown=auser:agroup --chmod=755 --link /app/*.config.toml* /opt/rscloud/.config/*.config.toml*
-# set the permissions
-RUN chmod +x /usr/local/bin/rscloud && \
-    chmod +x /opt/rscloud/.config && \
-    chown auser /usr/local/bin/rscloud && \
-    chown -R auser /opt/rscloud
 # ************** STAGE 3 **************
 # production: use the production base image to run the application
 FROM runner-base AS runner
