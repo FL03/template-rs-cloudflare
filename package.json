@@ -27,7 +27,7 @@
     "cf:build": "npx wrangler build",
     "cf:deploy": "npx wrangler deploy",
     "cf:dev": "npx wrangler dev",
-    "wasm-pack:build": "wasm-pack build --target web --release -d .artifacts/js",
-    "worker:build": "worker-build --release -d dist"
+    "wasm-pack:build": "wasm-pack build --target web --release -d .artifacts/wasm/js --features app",
+    "worker:build": "worker-build --release -d dist --features app"
   }
 }
