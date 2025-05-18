@@ -30,6 +30,7 @@ wasm-opt = false
 [[bin]]
 name = "rscloud"
 path = "bin/main.rs"
+required-features = ["native"]
 
 [lib]
 bench = false
@@ -55,9 +56,16 @@ full = [
     "uuid",
 ]
 
-app = [
+native = [
+    "full",
+    "axum/tokio",
+    "tokio?/full",
+]
+
+web = [
     "cf",
     "full",
+    "wasm",
 ]
 
 # ************* [FF:Dependencies] *************
@@ -65,7 +73,6 @@ cf = [
     "dep:worker",
     "dep:worker-macros",
     "tower",
-    "wasm",
 ]
 
 chrono = [
@@ -77,12 +84,17 @@ config = ["dep:config"]
 
 http1 = [
     "axum/http1",
-    "hyper/http1",
+    "hyper?/http1",
 ]
 
 http2 = [
     "axum/http2",
-    "hyper/http2",
+    "hyper?/http2",
+]
+
+hyper = [ 
+    "dep:hyper",
+    "dep:hyper-util",
 ]
 
 ws = [
@@ -94,8 +106,6 @@ time = ["dep:time"]
 tokio = [
     "dep:tokio",
     "tokio?/macros",
-    "tokio?/rt",
-    "tokio?/signal",
     "tokio?/sync",
     "tokio?/time",
 ]
@@ -124,10 +134,6 @@ uuid = [
 ]
 
 # ************* [FF:Environments] *************
-native = [
-    "axum/tokio"
-]
-
 wasi = []
 
 wasm = [
@@ -135,11 +141,10 @@ wasm = [
 ]
 
 [dependencies]
-config = { optional = true, version = "0.15" }
-# api
+# app
 axum = { default-features = false, features = ["json", "macros"], version = "0.8" }
-hyper = { features = [], version = "1" }
-tokio = { features = [], optional = true, version = "1" }
+config = { optional = true, version = "0.15" }
+tokio = { optional = true, version = "1" }
 # data & serialization
 bytes = { features = ["serde"], version = "1" }
 serde = { features = ["derive"], version = "1" }
@@ -154,7 +159,9 @@ tracing-subscriber = { features = ["env-filter", "fmt"], optional = true, versio
 # randomization
 uuid = { features = ["serde"], optional = true, version = "1" }
 # middleware & networking
-tower = { features = [], optional = true, version = "0.5" }
+hyper = { optional = true, version = "1" }
+hyper-util = { optional = true, version = "0.1" }
+tower = { optional = true, version = "0.5" }
 tower-service = { optional = true, version =  "0.3" }
 url = { version = "2" }
 # macros
