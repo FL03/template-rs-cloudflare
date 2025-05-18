@@ -37,6 +37,7 @@ jobs:
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      WRANGLER_VERSION: 4.15.2
     permissions:
       contents: read
       deployments: write
@@ -58,12 +59,6 @@ jobs:
         name: Setup cargo-binstall
         uses: cargo-bins/cargo-binstall@main
       -
-        name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-      -
         name: Install required tools
         run: cargo binstall -y wasm-pack worker-build
       - 
@@ -72,3 +67,6 @@ jobs:
         with:
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          wranglerVersion: ${{ env.WRANGLER_VERSION }}
+          preCommands: |
+            cargo binstall worker-build -y
