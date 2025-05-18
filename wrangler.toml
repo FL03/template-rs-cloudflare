@@ -1,4 +1,5 @@
 compatibility_date = "2025-05-16"
+compatibility_flags = [ "nodejs_compat" ]
 main = "build/worker/shim.mjs"
 name = "template-rs-cloudflare"
 workers_dev = false
