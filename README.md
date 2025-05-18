@@ -1,6 +1,8 @@
 # template-rs-cloudflare
 
-[![deploy](https://github.com/FL03/template-rs-cloudflare/actions/workflows/clippy.yml/badge.svg)](https://github.com/FL03/template-rs-cloudflare/actions/workflows/clippy.yml)
+[![Docker Image Version](https://img.shields.io/docker/v/jo3mccain/template-rs-cloudflare?sort=semver&style=for-the-badge&logo=docker)](https://hub.docker.com/r/jo3mccain/template-rs-cloudflare)
+
+[![deploy](https://github.com/FL03/template-rs-cloudflare/actions/workflows/deploy.yml/badge.svg)](https://github.com/FL03/template-rs-cloudflare/actions/workflows/deploy.yml)
 [![rust](https://github.com/FL03/template-rs-cloudflare/actions/workflows/rust.yml/badge.svg)](https://github.com/FL03/template-rs-cloudflare/actions/workflows/rust.yml)
 
 ***

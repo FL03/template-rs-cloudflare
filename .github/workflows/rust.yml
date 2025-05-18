@@ -6,27 +6,35 @@ concurrency:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  CARGO_TERM_COLOR: always
-  CARGO_INCREMENTAL: 0
-  RUST_BACKTRACE: 1
 
 on:
   pull_request:
     branches: [ main, master, ]
-    types: [ opened, reopened, closed ]
+    types: [ opened, reopened, synchronize ]
+    paths:
+      - bin/*
+      - src/*
+      - Cargo.*
   push:
+    branches: [ main, master ]
     tags: [ latest, "v*.*.*", "*-alpha", "*-beta", "*-canary", "*-nightly" ]
-  release:
-    types: [ published ]
+    paths:
+      - bin/*
+      - src/*
+      - Cargo.*
   repository_dispatch:
     types: [ rust ]
   workflow_dispatch:
 
 
-permissions: write-all
-
 jobs:
   workspace:
+    env:
+      CARGO_INCREMENTAL: 0
+      CARGO_TERM_COLOR: always
+      RUST_BACKTRACE: 1
+      RUSTC_VERSION: 1.86.0
+    permissions: write-all
     strategy:
       fail-fast: false
       matrix:
@@ -50,55 +58,7 @@ jobs:
           target: ${{ matrix.target }}
       - 
         name: Build
-        run: cargo build --locked --release --workspace --features full --target ${{ matrix.target }}
+        run: cargo build --locked --release --workspace --all-features --target ${{ matrix.target }}
       - 
         name: Test
-        run: cargo test --locked --release --workspace --features full --target ${{ matrix.target }}
-  release:
-    if: ${{ github.event_name == 'release' && github.event.action == 'created' || github.event_name == 'workflow_dispatch' }}
-    env:
-      IS_PRERELEASE: ${{ github.event.release.prerelease || github.event_name == 'workflow_dispatch' && github.event.inputs.prerelease }} 
-    permissions:
-      contents: read
-      deployments: write
-      id-token: write
-    strategy:
-      matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - 
-        name: Checkout
-        uses: actions/checkout@v4
-      - 
-        name: setup rustup
-        uses: actions-rust-lang/setup-rust-toolchain@v1
-        with:
-          cache-key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-          cache-workspaces: true
-          target: wasm32-unknown-unknown
-      - 
-        name: build
-        run: cargo build -r --locked --workspace -F app --target wasm32-unknown-unknown
-      - 
-        name: Include Release Artifacts
-        uses: softprops/action-gh-release@v2
-        with:
-          append_body: false
-          generate_release_notes: true
-          draft: false
-          prerelease: ${{ env.IS_PRERELEASE }}
-          name: ${{ github.event.release.name }}
-          tag_name: ${{ github.event.release.tag_name }}
-          body: |
-            # ${{ github.event.repository.name }} (${{ github.event.release.tag_name }})
-
-            ## Release Notes
-            
-            ${{ github.event.release.body }}
-
-            ## Artifacts
-            
-          files: |
-            target/release/wasm32-unknown-unknown/template_rs_cloudflare
-            target/release/wasm32-unknown-unknown/template_rs_cloudflare.wasm
+        run: cargo test --locked --release --workspace --all-features --target ${{ matrix.target }}
