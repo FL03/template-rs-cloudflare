@@ -8,9 +8,8 @@ FROM rust:${RUST_VERSION} AS builder-base
 # update and upgrade the system
 RUN apt-get update -y && \
     apt-get upgrade -y
-# update any toolchains
-RUN rustup update && \
-    rustup target add wasm32-unknown-unknown wasm32-wasip1 wasm32-wasip2
+# add additional targets for rustup
+RUN rustup target add wasm32-unknown-unknown
 # ************** STAGE 1 **************
 # builder: build the project using the builder-base image
 FROM builder-base AS builder
@@ -24,9 +23,7 @@ WORKDIR /app
 # copy the source code
 ADD . .
 # build the project
-RUN --mount=type=cache,target=/workspace/target/ \
-    --mount=type=cache,target=/usr/local/cargo/registry/ \
-    cargo build --locked --release --workspace --target wasm32-unknown-unknown --features web
+RUN cargo build --locked --release --target wasm32-unknown-unknown -p template-rs-cloudflare --lib --features web
 # ************** STAGE 2 **************
 # production-base: use the scratch image to run the application
 FROM scratch AS prod-base

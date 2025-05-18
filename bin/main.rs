@@ -2,6 +2,7 @@
     Appellation: main <module>
     Contrib: @FL03
 */
+use templated::Platform;
 
 fn main() -> anyhow::Result<()> {
     // initialize the tracer
@@ -12,7 +13,7 @@ fn main() -> anyhow::Result<()> {
     tracing::debug!("successfully initialized the tracing modules the application...");
     // log the startup event
     tracing::info!("initializing the application...");
-    let mut app = sdk::app::Platform::new();
+    let mut app = Platform::new();
 
     // declare the network address
     let addr = "0.0.0.0:8080".parse::<core::net::SocketAddr>().unwrap();

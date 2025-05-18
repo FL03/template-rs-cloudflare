@@ -20,7 +20,7 @@ pub(crate) mod macros {
 /// re-import commonly used traits, primitives, etc. from the various submodules
 #[doc(inline)]
 pub use self::{
-    app::{ApiContext, ApiSettings, api},
+    app::{api, ApiContext, ApiSettings, Platform},
     error::*,
     primitives::*,
     types::prelude::*,

@@ -5,7 +5,7 @@
 #[doc(inline)]
 pub use self::{
     config::{ApiContext, ApiSettings},
-    error::*,
+    error::AppError,
     interface::Platform,
     routes::api,
     state::AppState,

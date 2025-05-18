@@ -35,7 +35,7 @@ required-features = ["native"]
 [lib]
 bench = false
 crate-type = ["cdylib", "rlib"]
-name = "sdk"
+name = "templated"
 path = "src/lib.rs"
 doctest = false
 test = true
