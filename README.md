@@ -1,4 +1,7 @@
-# template-rs-cloudflare
+---
+title: template-rs-cloudflare
+description: A RESTful application template built for Cloudflare Workers using Rust and WebAssembly.
+---
 
 [![Docker Image Version](https://img.shields.io/docker/v/jo3mccain/template-rs-cloudflare?sort=semver&style=for-the-badge&logo=docker)](https://hub.docker.com/r/jo3mccain/template-rs-cloudflare)
 
@@ -17,47 +20,73 @@ A server optimized for WASM applications
 
 ## Getting Started
 
-### Building from the source
+Make sure you have the following installed:
 
-Start by cloning the repository
+- [Docker](https://docs.docker.com/get-docker/)
+- [Rust](https://www.rust-lang.org/tools/install)
 
-```bash
-git clone https://github.com/FL03/template-rs-cloudflare.git
-cd template-rs-cloudflare
-```
-
-#### _Building the project_
-
-```bash
-cargo build --workspace --release -F full,cf --target wasm32-unknown-unknown
-```
-
-#### _Running tests_
-
-```bash
-cargo test --workspace --release -F full,cf --target wasm32-unknown-unknown
-```
-
-## Usage
-
-### Pre-requisites
-
-For convenience, we recommend using [cargo-binstall](https://github.com/cargo-bins/cargo-binstall) to install rust binaries. You can install it with the following command:
+Make sure you have the `cargo-binstall` utility installed to streamline the installation of any additional tools needed.
 
 ```bash
 cargo install cargo-binstall
 ```
 
-Once you have `cargo-binstall` installed, you can install the required packages with the following command:
+### Building from the source
+
+Start by cloning the repository
+
+```bash
+git clone https://github.com/FL03/template-rs-cloudflare.git --branch main
+```
+
+Then, navigate to the project directory:
+
+```bash
+cd template-rs-cloudflare
+```
+
+#### Native
+
+Finally, we can run the server using cargo:
+
+```bash
+cargo run --bin rscloud --features native
+```
+
+#### WebAssembly
+
+Build the project using the wasm32 target:
+
+```bash
+cargo build --workspace --release --features web --target wasm32-unknown-unknown
+```
+
+#### Cloudflare
+
+Install the `wasm-pack` and `worker-build` tools using `cargo-binstall:
 
 ```bash
 cargo binstall -y wasm-pack worker-build
 ```
 
-### Running the server
+Finally, build the project using the `worker-build` tool:
 
 ```bash
-pzzld serve --port 8080
+worker-build build -d build --release --features web
+```
+
+This will create a `build` directory containing the compiled WASM files and the necessary JavaScript glue code.
+
+Alternatively, you can use the `wasm-pack` tool to build the project:
+
+```bash
+wasm-pack build --target web --release --out-dir build
+```
+
+or, use `npx` and `wrangler` to build the project:
+
+```bash
+npx wrangler@latest build
 ```
 
 ## Contributing
