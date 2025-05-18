@@ -8,6 +8,7 @@ env:
   CARGO_INCREMENTAL: 0
   CARGO_TERM_COLOR: always
   RUST_BACKTRACE: 1
+  IS_PRERELEASE: ${{ github.event.release.prerelease || github.event_name == 'workflow_dispatch' && github.event.inputs.prerelease }} 
 
 on:
   release:
@@ -27,37 +28,54 @@ permissions:
   deployments: write
 
 jobs:
-  release:
-    if: ${{ github.event_name == 'release' && github.event.action == 'published' || github.event_name == 'repository_dispatch' && github.event.action == 'release' || github.event_name == 'workflow_dispatch' }}
-    env:
-      IS_PRERELEASE: ${{ github.event.release.prerelease || github.event_name == 'workflow_dispatch' && github.event.inputs.prerelease }} 
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          cache-key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          cache-workspaces: true
+      - name: setup cargo-binstall
+        uses: cargo-bins/cargo-binstall@main
+      - name: install the required utilities
+        run: cargo binstall -y wasm-pack worker-build
+      - name: build (web)
+        run: worker-build --release --features web
+      - name: release artifacts
+        uses: softprops/action-gh-release@v2
+        with:
+          append_body: false
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ env.IS_PRERELEASE }}
+          name: ${{ github.event.release.name }}
+          tag_name: ${{ github.event.release.tag_name }}
+          body: |
+            # ${{ github.event.repository.name }} (${{ github.event.release.tag_name }})
 
+            ## Release Notes
+            
+            ${{ github.event.release.body }}
+
+            ## Artifacts
+            
+          files: build
+  native:
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
     runs-on: ${{ matrix.os }}
     steps:
-      - 
-        name: Checkout
-        uses: actions/checkout@v4
-      - 
-        name: setup rustup
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           cache-key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           cache-workspaces: true
-      - 
-        name: setup cargo-binstall
-        uses: cargo-bins/cargo-binstall@main
-      -
-        name: install the required tools
-        run: cargo binstall -y wasm-pack worker-build
-      - 
-        name: build
-        run: worker-build -d build --release --locked --workspace --features full,native
-      - 
-        name: Attach artifacts
+      - name: build (native)
+        run: cargo build --locked --release --features native --bin rscloud
+      - name: release artifacts
         uses: softprops/action-gh-release@v2
         with:
           append_body: false
@@ -76,4 +94,4 @@ jobs:
             ## Artifacts
             
           files: |
-            build
+            target/release/rscloud

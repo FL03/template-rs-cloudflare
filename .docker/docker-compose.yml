@@ -3,9 +3,10 @@ version: "4.0"
 services:
   app:
     build: 
-      context: .
-      dockerfile: Dockerfile
-    container_name: vaulted
+      context: ..
+      dockerfile: native.dockerfile
+    container_name: rscloud
+    image: rscloud:latest
     restart: unless-stopped
     networks: [ default, backend ]
     ports: [ 8080:8080 ]
@@ -13,7 +14,7 @@ services:
       - ./data:/data
       - ./config:/config
     environment:
-      - RUST_LOG="scsys=debug,info"
+      - RUST_LOG="rscloud=debug,info"
       - RUST_BACKTRACE=1
       - APP_CONFIG=/config/config.toml
       - APP_MODE=production      

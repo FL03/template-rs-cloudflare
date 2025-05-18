@@ -26,7 +26,12 @@ WORKDIR /app
 # copy the source code
 ADD . .
 # build the project
-RUN cargo build -r --target wasm32-unknown-unknown -p template-rs-cloudflare --lib --features web
+RUN cargo build \
+    --release \
+    --target wasm32-unknown-unknown \
+    --package template-rs-cloudflare \
+    --lib \
+    --features web
 # ************** STAGE 2 **************
 # production-base: use the scratch image to run the application
 FROM scratch AS prod-base
