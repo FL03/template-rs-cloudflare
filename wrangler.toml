@@ -19,11 +19,16 @@ zone_name = "scsys.io"
 [env.production]
 name = "production"
 routes = [
-  { pattern = "worker.scsys.io/api/*", zone_name = "scsys.io" },
+  { pattern = "worker.scsys.io/*", zone_name = "scsys.io" },
+  "template-rs-cloudflare-scsys.workers.dev",
 ]
 
 [env.preview]
 name = "preview"
+routes = [
+  { pattern = "worker-dev.scsys.io/*", zone_name = "scsys.io" },
+  "*-template-rs-cloudflare-scsys.workers.dev/*",
+]
 
 # ************* [Variables] *************
 [vars]
