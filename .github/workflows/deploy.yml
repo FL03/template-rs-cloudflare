@@ -6,12 +6,16 @@ concurrency:
 
 env:
   CARGO_TERM_COLOR: always
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
   NODE_VERSION: 22
   RUSTC_VERSION: 1.86.0
+  WRANGLER_VERSION: 4.15.2
 
 on:
   pull_request:
     branches: [ main, master ]
+    types: [ opened, reopened, synchronize ]
     paths:
       - bin/*
       - src/*
@@ -19,6 +23,12 @@ on:
   push:
     branches: [ main, master ]
     tags: [ v*.*.*, "*-alpha", "*-beta", "*-canary", "*-nightly" ]
+    paths:
+      - bin/*
+      - src/*
+      - Cargo.*
+  release:
+    types: [ prereleased, released ]
   repository_dispatch:
     types: [ cloudflare, deploy ]
   workflow_dispatch:
@@ -32,19 +42,43 @@ on:
           - Preview
           - Production
 
+permissions:
+  contents: read
+  deployments: write
+  id-token: write
+
 jobs:
-  cloudflare:
+  preview:
+    if: github.event_name == 'release' && github.event.action == 'prereleased' || github.event.inputs.environment == 'Preview' || github.event_name == 'pull_request'
     environment: 
-      name: ${{ github.event.inputs.environment }}
+      name: Preview
       url: ${{ steps.deploy.outputs.deployment-url }}
-    env:
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-      WRANGLER_VERSION: 4.15.2
-    permissions:
-      contents: read
-      deployments: write
-      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Checkout the source code
+        uses: actions/checkout@v4
+      - 
+        name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          cache: true
+          cache-key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          cache-workspaces: true
+          target: wasm32-unknown-unknown
+      - 
+        id: deploy
+        name: Build & Deploy Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          wranglerVersion: ${{ env.WRANGLER_VERSION }}
+  production:
+    if: github.event_name == 'release' && github.event.action == 'released' || github.event.inputs.environment == 'Production'
+    environment: 
+      name: Production
+      url: ${{ steps.deploy.outputs.deployment-url }}
     runs-on: ubuntu-latest
     steps:
       - 

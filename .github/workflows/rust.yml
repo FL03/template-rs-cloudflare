@@ -6,6 +6,10 @@ concurrency:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  CARGO_INCREMENTAL: 0
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+  RUSTC_VERSION: 1.86.0
 
 on:
   pull_request:
@@ -26,9 +30,44 @@ on:
     types: [ rust ]
   workflow_dispatch:
 
+permissions: write-all
 
 jobs:
   workspace:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:  [ ubuntu-latest ]
+        target: [ wasm32-unknown-unknown, wasm32-wasip1, wasm32-wasip2 ]
+        include:
+          - os: ubuntu-latest
+            target: wasm32-unknown-unknown
+    runs-on: ${{ matrix.os }}
+    steps:
+      - 
+        name: Checkout
+        uses: actions/checkout@v4
+      - 
+        name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          cache: true
+          cache-key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          cache-workspaces: true
+          target: ${{ matrix.target }}
+      - 
+        name: Setup cargo-binstall
+        uses: cargo-bins/cargo-binstall@main
+      -
+        name: Install required tools
+        run: cargo binstall -y wasm-pack worker-build
+      - 
+        name: Build
+        run: cargo build --locked --release --workspace --all-features --target ${{ matrix.target }}
+      - 
+        name: Test
+        run: cargo test --locked --release --workspace --all-features --target ${{ matrix.target }}
+  release:
     env:
       CARGO_INCREMENTAL: 0
       CARGO_TERM_COLOR: always

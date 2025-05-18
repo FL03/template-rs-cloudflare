@@ -13,24 +13,23 @@ pub(crate) mod prelude {
 }
 
 use axum::Router;
-use tower_http::classify::StatusInRangeAsFailures;
-use tower_http::trace::TraceLayer;
 
-/// [`api`] is the primary router for the application; nests the version routers accordingly 
+/// [`api`] is the primary router for the application; nests the version routers accordingly
 /// and equips the api with various service layers
-pub fn api<S>() -> Router<S>
-where
-    S: Clone + Send + Sync + 'static,
-{
+pub fn api() -> Router {
     Router::new()
-        .nest_service("/api", v0())
-        .layer(TraceLayer::new(
-            StatusInRangeAsFailures::new(400..=599).into_make_classifier(),
+        .merge(v0())
+        .layer(tower_http::trace::TraceLayer::new(
+            tower_http::classify::StatusInRangeAsFailures::new(400..=599).into_make_classifier(),
         ))
+        .layer(
+            tower_http::cors::CorsLayer::new()
+                .allow_origin(tower_http::cors::Any)
+                .allow_methods(tower_http::cors::Any),
+        )
 }
 
 /// [`v0`] captures all of the api routes for v0;
 pub fn v0() -> Router {
-    Router::new()
-        .nest_service("/", index::router())
+    Router::new().merge(index::router())
 }

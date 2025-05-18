@@ -6,33 +6,41 @@
 //!
 //!
 /// declare macros that are either exported or simply used internally
+#[doc(hidden)]
 #[macro_use]
 pub(crate) mod macros {
+    /// a macro to streamline the implementation of various get/set/with methods
     #[macro_use]
     pub mod gsw;
+    /// this module enables certain traits to be _privately_ implemented
     #[macro_use]
-    pub(crate) mod seal;
+    pub mod seal;
 }
 
-#[cfg(feature = "cf")]
-pub use self::app::worker::*;
-
+/// re-import commonly used traits, primitives, etc. from the various submodules
 #[doc(inline)]
 pub use self::{
     app::{ApiContext, ApiSettings, api},
     error::*,
-    primitives::prelude::*,
+    primitives::*,
     types::prelude::*,
     utils::prelude::*,
 };
+
+#[doc(inline)]
+#[cfg(feature = "cf")]
+pub use self::cloudflare::*;
 
 pub mod app;
 pub mod data;
 pub mod error;
 
+#[cfg(feature = "cf")]
+pub mod cloudflare;
+
 pub(crate) mod primitives {
-    // #[doc(inline)]
-    // pub use self::prelude::*;
+    #[doc(inline)]
+    pub use self::prelude::*;
 
     pub mod constants;
     pub mod statics;
@@ -94,11 +102,11 @@ pub mod utils {
 
 pub mod prelude {
     #[doc(no_inline)]
-    pub use crate::error::*;
-    #[doc(no_inline)]
     pub use crate::app::prelude::*;
     #[doc(no_inline)]
     pub use crate::data::prelude::*;
+    #[doc(no_inline)]
+    pub use crate::error::*;
     #[doc(no_inline)]
     pub use crate::primitives::prelude::*;
     #[doc(no_inline)]
@@ -106,4 +114,3 @@ pub mod prelude {
     #[doc(no_inline)]
     pub use crate::utils::prelude::*;
 }
-

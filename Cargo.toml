@@ -41,6 +41,7 @@ test = true
 
 [features]
 default = [
+    "http1",
     "time",
 ]
 
@@ -50,7 +51,7 @@ full = [
     "config",
     "tokio",
     "tower",
-    "tracing",
+    "tracing-subscriber",
     "uuid",
 ]
 
@@ -63,41 +64,58 @@ app = [
 cf = [
     "dep:worker",
     "dep:worker-macros",
-    "tower-service",
+    "tower",
     "wasm",
 ]
 
-chrono = ["dep:chrono"]
+chrono = [
+    "dep:chrono",
+    "tracing-subscriber?/chrono"
+]
 
 config = ["dep:config"]
 
 http1 = [
-    "axum/http1"
+    "axum/http1",
+    "hyper/http1",
 ]
 
 http2 = [
-    "axum/http2"
+    "axum/http2",
+    "hyper/http2",
+]
+
+ws = [
+    "axum/ws",
 ]
 
 time = ["dep:time"]
 
-tokio = ["dep:tokio"]
+tokio = [
+    "dep:tokio",
+    "tokio?/macros",
+    "tokio?/rt",
+    "tokio?/signal",
+    "tokio?/sync",
+    "tokio?/time",
+]
 
 tower = [
     "dep:tower",
     "dep:tower-http",
-    "tower-http?/cors",
-    "tower-http?/compression-full",
-    "tower-http?/trace",
+    "dep:tower-service",
     "tower-http?/tower",
 ]
-
-tower-service = ["dep:tower-service"]
 
 tracing = [
     "dep:tracing",
     "axum/tracing",
     "tokio?/tracing",
+]
+
+tracing-subscriber = [
+    "dep:tracing-subscriber",
+    "tracing",
 ]
 
 uuid = [ 
@@ -106,6 +124,10 @@ uuid = [
 ]
 
 # ************* [FF:Environments] *************
+native = [
+    "axum/tokio"
+]
+
 wasi = []
 
 wasm = [
@@ -116,6 +138,7 @@ wasm = [
 config = { optional = true, version = "0.15" }
 # api
 axum = { default-features = false, features = ["json", "macros"], version = "0.8" }
+hyper = { features = [], version = "1" }
 tokio = { features = [], optional = true, version = "1" }
 # data & serialization
 bytes = { features = ["serde"], version = "1" }
@@ -127,11 +150,11 @@ anyhow ={ version = "1" }
 thiserror = { version = "2" }
 # logging
 tracing = { features = ["attributes", "log"], optional = true, version = "0.1" }
+tracing-subscriber = { features = ["env-filter", "fmt"], optional = true, version = "0.3" }
 # randomization
 uuid = { features = ["serde"], optional = true, version = "1" }
 # middleware & networking
 tower = { features = [], optional = true, version = "0.5" }
-tower-http = { features = [], optional = true, version = "0.6" }
 tower-service = { optional = true, version =  "0.3" }
 url = { version = "2" }
 # macros
@@ -144,6 +167,16 @@ time = { features = ["serde"], optional = true, version = "0.3" }
 # cloudflare
 worker = { features = ["axum", "http"], optional = true, version = "0.5" }
 worker-macros = { features = ["http"], optional = true, version = "0.5" }
+
+[dependencies.tower-http]
+optional = true
+version = "0.6"
+features = [
+    "compression-full",
+    "cors",
+    "trace",
+    "tower",
+]
 
 [target.wasm32-unknown-unknown.dependencies]
 console_error_panic_hook = "0.1"

@@ -35,7 +35,7 @@ impl<T> Id<T> {
     /// returns an immutable reference to the inner value
     pub const fn get(&self) -> &T {
         &self.0
-    }   
+    }
     /// returns a mutable reference to the inner value
     pub fn get_mut(&mut self) -> &mut T {
         &mut self.0
@@ -44,7 +44,7 @@ impl<T> Id<T> {
     pub fn map<U, F: FnOnce(&T) -> U>(&self, f: F) -> Id<U> {
         Id(f(self.get()))
     }
-    /// apply a mutable function to the inner value and return a mutable reference to the 
+    /// apply a mutable function to the inner value and return a mutable reference to the
     /// current instance
     pub fn map_mut<F: FnMut(&mut T)>(&mut self, mut f: F) -> &mut Self {
         f(self.get_mut());
@@ -64,7 +64,10 @@ impl<T> Id<T> {
         core::mem::swap(&mut self.0, &mut other.0);
     }
     /// returns a new instance using the string representation of the inner value
-    pub fn as_id_string(&self) -> Id<String> where T: ToString {
+    pub fn as_id_string(&self) -> Id<String>
+    where
+        T: ToString,
+    {
         self.map(|id| id.to_string())
     }
 }
@@ -109,8 +112,8 @@ impl<T> core::ops::DerefMut for Id<T> {
 
 impl Id<String> {
     /// generate a new unique identifier;
-    /// 
-    /// if the `uuid` feature is enabled, a [`uuid::Uuid`] is generated and converted to a 
+    ///
+    /// if the `uuid` feature is enabled, a [`uuid::Uuid`] is generated and converted to a
     /// string; optherwise, an atomic counter is used to generate a unique identifier
     pub fn generate() -> Self {
         #[cfg(feature = "uuid")]
