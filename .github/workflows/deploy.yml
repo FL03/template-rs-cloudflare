@@ -10,8 +10,15 @@ env:
   RUSTC_VERSION: 1.86.0
 
 on:
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - bin/*
+      - src/*
+      - Cargo.*
   push:
-    tags: [ v*, "*-alpha", "*-beta", "*-canary", "*-nightly" ]
+    branches: [ main, master ]
+    tags: [ v*.*.*, "*-alpha", "*-beta", "*-canary", "*-nightly" ]
   repository_dispatch:
     types: [ cloudflare, deploy ]
   workflow_dispatch:

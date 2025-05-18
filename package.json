@@ -24,10 +24,10 @@
     "deploy": "npm run cf:deploy",
     "dev": "npm run cf:dev",
     "cargo:setup": "cargo install cargo-binstall && cargo binstall wasm-pack worker-build -y",
-    "cf:build": "npx wrangler build",
-    "cf:deploy": "npx wrangler deploy",
-    "cf:dev": "npx wrangler dev",
-    "wasm-pack:build": "wasm-pack build --target web --release -d .artifacts/build/js --features app",
-    "worker:build": "worker-build --release -d build --features app"
+    "cf:build": "npx wrangler@latest build",
+    "cf:deploy": "npx wrangler@latest deploy",
+    "cf:dev": "npx wrangler@latest dev",
+    "wasm-pack:build": "npx wasm-pack build --target web --release -d .artifacts/build/js --features app",
+    "worker:build": "worker-build --release --features app"
   }
 }

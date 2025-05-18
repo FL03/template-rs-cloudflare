@@ -1,11 +1,11 @@
-compatibility_date = "2025-16-05"
+compatibility_date = "2025-05-16"
 main = "build/worker/shim.mjs"
 name = "template-rs-cloudflare"
 
 workers_dev = false
 
 [build]
-command = "worker-build --release -d build -F app"
+command = "worker-build --release -F app"
 
 [observability.logs]
 enabled = true
@@ -14,7 +14,7 @@ enabled = true
 pattern = "worker.scsys.io"
 zone_name = "scsys.io"
 
-# ********* [Env] Staging *********
+# ************* [Environments] *************
 [env.staging]
 name = "worker-staging"
 
@@ -22,6 +22,6 @@ name = "worker-staging"
 pattern = "stag.scsys.io"
 zone_name = "scsys.io"
 
-# ************* [Environment variables] *************
+# ************* [Variables] *************
 [vars]
-# Add your environment variables here
+RUST_BACKTRACE = 1

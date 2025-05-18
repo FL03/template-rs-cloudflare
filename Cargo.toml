@@ -63,6 +63,7 @@ app = [
 cf = [
     "dep:worker",
     "dep:worker-macros",
+    "tower-service",
     "wasm",
 ]
 
@@ -85,16 +86,24 @@ tokio = ["dep:tokio"]
 tower = [
     "dep:tower",
     "dep:tower-http",
+    "tower-http?/cors",
+    "tower-http?/compression-full",
+    "tower-http?/trace",
+    "tower-http?/tower",
 ]
+
+tower-service = ["dep:tower-service"]
 
 tracing = [
     "dep:tracing",
     "axum/tracing",
     "tokio?/tracing",
-    "tower-http?/trace",
 ]
 
-uuid = [ "dep:uuid" ]
+uuid = [ 
+    "dep:uuid",
+    "uuid?/v4", 
+]
 
 # ************* [FF:Environments] *************
 wasi = []
@@ -123,7 +132,7 @@ uuid = { features = ["serde"], optional = true, version = "1" }
 # middleware & networking
 tower = { features = [], optional = true, version = "0.5" }
 tower-http = { features = [], optional = true, version = "0.6" }
-tower-service = { version =  "0.3" }
+tower-service = { optional = true, version =  "0.3" }
 url = { version = "2" }
 # macros
 paste = "1"
@@ -138,7 +147,7 @@ worker-macros = { features = ["http"], optional = true, version = "0.5" }
 
 [target.wasm32-unknown-unknown.dependencies]
 console_error_panic_hook = "0.1"
-
+# getrandom = { features = ["wasm_js"], version = "0.3" }
 
 [profile.dev]
 codegen-units = 16

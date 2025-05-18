@@ -28,7 +28,7 @@ impl<T> Message<T> {
     pub fn from_message(message: impl ToString) -> Self {
         Self::new(message, None)
     }
-    #[cfg(feature = "json")]
+    // #[cfg(feature = "json")]
     pub fn into_json_axum(self) -> axum::Json<Message<T>> {
         axum::Json(self)
     }

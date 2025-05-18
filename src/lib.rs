@@ -21,6 +21,7 @@ pub use self::app::worker::*;
 pub use self::{
     app::{ApiContext, ApiSettings, api},
     error::*,
+    primitives::prelude::*,
     types::prelude::*,
     utils::prelude::*,
 };
@@ -29,15 +30,33 @@ pub mod app;
 pub mod data;
 pub mod error;
 
+pub(crate) mod primitives {
+    // #[doc(inline)]
+    // pub use self::prelude::*;
+
+    pub mod constants;
+    pub mod statics;
+
+    pub(crate) mod prelude {
+        #[doc(inline)]
+        pub use super::constants::*;
+        #[doc(inline)]
+        pub use super::statics::*;
+    }
+}
+
 pub mod types {
     #[doc(inline)]
     pub use self::prelude::*;
 
+    pub mod id;
     pub mod message;
 
     pub(crate) mod prelude {
         #[doc(inline)]
         pub use super::aliases::*;
+        #[doc(inline)]
+        pub use super::id::*;
         #[doc(inline)]
         pub use super::message::*;
     }
@@ -75,9 +94,13 @@ pub mod utils {
 
 pub mod prelude {
     #[doc(no_inline)]
+    pub use crate::error::*;
+    #[doc(no_inline)]
     pub use crate::app::prelude::*;
     #[doc(no_inline)]
     pub use crate::data::prelude::*;
+    #[doc(no_inline)]
+    pub use crate::primitives::prelude::*;
     #[doc(no_inline)]
     pub use crate::types::prelude::*;
     #[doc(no_inline)]

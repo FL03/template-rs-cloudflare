@@ -70,6 +70,9 @@ jobs:
             ## Artifacts
             
           files: |
-            target/release/wasm32-unknown-unknown/template_rs_cloudflare
-            target/release/wasm32-unknown-unknown/template_rs_cloudflare.wasm
-
+            target/release/wasm32-unknown-unknown/rscloud.d
+            target/release/wasm32-unknown-unknown/rscloud.wasm
+            target/release/wasm32-unknown-unknown/libsdk.d
+            target/release/wasm32-unknown-unknown/libsdk.wasm
+            target/release/wasm32-unknown-unknown/sdk.d
+            target/release/wasm32-unknown-unknown/sdk.wasm
