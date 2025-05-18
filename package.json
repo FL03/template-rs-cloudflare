@@ -5,8 +5,8 @@
     "url": "https://github.com/FL03"
   },
   "engines": {
-    "node": ">=22",
-    "npm": ">=10"
+    "node": ">=18",
+    "npm": ">=9"
   },
   "keywords": ["cloudflare", "template"],
   "license": "Apache-2.0",
