@@ -16,10 +16,6 @@ on:
   pull_request:
     branches: [ main, master ]
     types: [ opened, reopened, synchronize ]
-    paths:
-      - bin/*
-      - src/*
-      - Cargo.*
   push:
     branches: [ main, master ]
     tags: [ v*.*.*, "*-alpha", "*-beta", "*-canary", "*-nightly" ]
@@ -27,6 +23,7 @@ on:
       - bin/*
       - src/*
       - Cargo.*
+      - wrangler.toml
   release:
     types: [ prereleased, released ]
   repository_dispatch:
@@ -38,9 +35,7 @@ on:
         required: true
         default: Preview
         type: choice
-        options:
-          - Preview
-          - Production
+        options: [ Preview, Production ]
 
 permissions:
   contents: read
