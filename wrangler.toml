@@ -5,7 +5,7 @@ name = "template-rs-cloudflare"
 workers_dev = false
 
 [build]
-command = "worker-build --release -F app"
+command = "cargo install -q worker-build && worker-build --release -F app"
 
 [observability.logs]
 enabled = true
