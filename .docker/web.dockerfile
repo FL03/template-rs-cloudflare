@@ -35,8 +35,8 @@ RUN cargo build \
 # ************** STAGE 2 **************
 # production-base: use the scratch image to run the application
 FROM scratch AS prod-base
-# copy the binary to the system
-COPY --from=builder /app/target/wasm32-unknown-unknown/release/templated /app
+# copy the wasm modules to the image
+COPY --from=builder /app/target/wasm32-unknown-unknown/release/templated.wasm /app/templated.wasm
 # copy the config directory
 COPY --from=builder --link /app/.config /app/.config
 # ************** STAGE 3 **************
