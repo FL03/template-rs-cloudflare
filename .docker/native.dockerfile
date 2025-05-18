@@ -8,9 +8,6 @@ FROM rust:${RUST_VERSION} AS builder-base
 # update and upgrade the system
 RUN apt-get update -y && \
     apt-get upgrade -y
-# update any toolchains
-RUN rustup update && \
-    rustup target add wasm32-unknown-unknown wasm32-wasip1 wasm32-wasip2
 # ************** STAGE 1 **************
 # builder: build the project using the builder-base image
 FROM builder-base AS builder

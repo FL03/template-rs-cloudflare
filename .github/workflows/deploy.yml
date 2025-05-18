@@ -24,6 +24,7 @@ on:
       - src/*
       - Cargo.*
       - wrangler.toml
+      - .github/workflows/deploy.yml
   release:
     types: [ prereleased, released ]
   repository_dispatch:
