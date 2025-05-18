@@ -124,7 +124,6 @@ tower = [
 tracing = [
     "dep:tracing",
     "axum/tracing",
-    "hyper/tracing",
     "hyper-util/tracing",
     "tokio?/tracing",
     "tower?/tracing",
