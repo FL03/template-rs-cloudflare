@@ -82,6 +82,10 @@ chrono = [
 
 config = ["dep:config"]
 
+console_error_panic_hook = [
+    "dep:console_error_panic_hook"
+]
+
 http1 = [
     "axum/http1",
     "hyper?/http1",
@@ -141,6 +145,7 @@ wasm = [
 ]
 
 [dependencies]
+
 # app
 axum = { default-features = false, features = ["json", "macros"], version = "0.8" }
 config = { optional = true, version = "0.15" }
@@ -174,6 +179,8 @@ time = { features = ["serde"], optional = true, version = "0.3" }
 # cloudflare
 worker = { features = ["axum", "http"], optional = true, version = "0.5" }
 worker-macros = { features = ["http"], optional = true, version = "0.5" }
+# wasm
+console_error_panic_hook = { optional = true, version = "0.1" }
 
 [dependencies.tower-http]
 optional = true
@@ -184,10 +191,6 @@ features = [
     "trace",
     "tower",
 ]
-
-[target.wasm32-unknown-unknown.dependencies]
-console_error_panic_hook = "0.1"
-# getrandom = { features = ["wasm_js"], version = "0.3" }
 
 [profile.dev]
 codegen-units = 16
