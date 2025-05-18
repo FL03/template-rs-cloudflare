@@ -69,5 +69,3 @@ jobs:
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           wranglerVersion: ${{ env.WRANGLER_VERSION }}
-          preCommands: |
-            cargo binstall worker-build -y
