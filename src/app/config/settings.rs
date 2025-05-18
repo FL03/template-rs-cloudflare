@@ -28,8 +28,6 @@ impl ApiSettings {
         }
     }
 
-    
-
     gsw! {
         database: &DatabaseConfig,
     }

@@ -5,7 +5,16 @@
 use super::ApiSettings;
 
 #[derive(
-    Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd, serde::Deserialize, serde::Serialize,
+    Clone,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    serde::Deserialize,
+    serde::Serialize,
 )]
 #[serde(default)]
 pub struct ApiContext {

@@ -11,4 +11,3 @@ pub enum AppError {
     #[error("")]
     TerminationFailed,
 }
-

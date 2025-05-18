@@ -3,11 +3,11 @@
     Contrib: @FL03
 */
 
-#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, serde::Deserialize, serde::Serialize)]
+#[derive(
+    Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, serde::Deserialize, serde::Serialize,
+)]
 #[serde(default, rename_all = "snake_case")]
-pub struct AppState {
-
-}
+pub struct AppState {}
 
 impl AppState {
     pub fn new() -> Self {
