@@ -10,15 +10,16 @@ fn main() -> anyhow::Result<()> {
         .init();
     // log the event
     tracing::debug!("successfully initialized the tracing modules the application...");
-    // log the start
+    // log the startup event
     tracing::info!("initializing the application...");
+    let mut app = sdk::app::AppInterface::new();
 
     // declare the network address
     let addr = "0.0.0.0:8080".parse::<core::net::SocketAddr>().unwrap();
     // setup the runtime
     let rt = _runtime()?;
     // register the runner
-    let _output = rt.block_on(_runner(addr));
+    let _output = rt.block_on(app.run(addr));
     // log the address
     tracing::info!("Listening on {}", addr);
     if let Err(e) = _output {
@@ -41,6 +42,15 @@ async fn _runner<A>(addr: A) -> anyhow::Result<()>
 where
     A: tokio::net::ToSocketAddrs,
 {
+    async fn graceful_shutdown() {
+        // wait for a signal to shutdown
+        tokio::signal::ctrl_c()
+            .await
+            .expect("failed to install CTRL+C signal handler");
+        // log the shutdown
+        tracing::info!("shutdown signal recieved; terminating services...");
+    }
+    
     // initialize the app router
     let app = sdk::app::api();
     // run our app with hyper, listening globally on port 3000
@@ -51,13 +61,4 @@ where
         .await?;
     // wait for the server to finish
     Ok(())
-}
-/// this function initiates a graceful shutdown of the server and related services.
-pub async fn graceful_shutdown() {
-    // wait for a signal to shutdown
-    tokio::signal::ctrl_c()
-        .await
-        .expect("failed to install CTRL+C signal handler");
-    // log the shutdown
-    tracing::info!("shutdown signal recieved; terminating services...");
 }
