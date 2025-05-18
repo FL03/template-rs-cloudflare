@@ -1,15 +1,32 @@
-name: cloudflare
+name: deploy
+
+concurrency:   
+  cancel-in-progress: false
+  group: ${{ github.workflow }}-${{ github.ref }}
 
 env:
   CARGO_TERM_COLOR: always
   NODE_VERSION: 22
+  RUSTC_VERSION: 1.86.0
 
 on:
   push:
     tags: [ v*, "*-alpha", "*-beta", "*-canary", "*-nightly" ]
+  repository_dispatch:
+    types: [ cloudflare, deploy ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: Preview
+        type: choice
+        options:
+          - Preview
+          - Production
 
 jobs:
-  worker:
+  cloudflare:
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
@@ -29,7 +46,18 @@ jobs:
           cache: true
           cache-key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           cache-workspaces: true
-      
+          target: wasm32-unknown-unknown
+      -
+        name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      -
+        name: Install prerequisites
+        run: |
+          cargo install cargo-binstall
+          cargo binstall -y wasm-pack worker-build
       - 
         name: Build & Deploy Worker
         uses: cloudflare/wrangler-action@v3

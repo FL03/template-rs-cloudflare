@@ -1,4 +1,4 @@
-name: containers
+name: docker
 
 concurrency:
   cancel-in-progress: false

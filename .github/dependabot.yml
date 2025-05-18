@@ -5,14 +5,12 @@ updates:
       interval: monthly
     directories:
       - /
-      - /sdk
-      - /bin/*
   - package-ecosystem: devcontainers
     directory: /
     schedule:
       interval: monthly
   - package-ecosystem: docker
-    directory: /
+    directory: /.docker
     schedule:
       interval: monthly
   - package-ecosystem: docker-compose

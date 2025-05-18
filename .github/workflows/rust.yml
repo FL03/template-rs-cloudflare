@@ -5,6 +5,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
 
 env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   CARGO_TERM_COLOR: always
   CARGO_INCREMENTAL: 0
   RUST_BACKTRACE: 1
@@ -14,21 +15,26 @@ on:
     branches: [ main, master, ]
     types: [ opened, reopened, closed ]
   push:
-    tags: [ v*, "*-nightly" ]
+    tags: [ latest, "v*.*.*", "*-alpha", "*-beta", "*-canary", "*-nightly" ]
+  release:
+    types: [ published ]
   repository_dispatch:
     types: [ rust ]
   workflow_dispatch:
+
 
 permissions: write-all
 
 jobs:
   workspace:
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
-        os:  [ ubuntu-latest, windows-latest, macos-latest ]
+        os:  [ ubuntu-latest ]
+        target: [ wasm32-unknown-unknown ]
+        include:
+          - os: ubuntu-latest
+            target: wasm32-unknown-unknown
     runs-on: ${{ matrix.os }}
     steps:
       - 
@@ -41,9 +47,58 @@ jobs:
           cache: true
           cache-key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           cache-workspaces: true
+          target: ${{ matrix.target }}
       - 
         name: Build
-        run: cargo build --release --workspace --features full --target wasm32-unknown-unknown
+        run: cargo build --locked --release --workspace --features full --target ${{ matrix.target }}
       - 
         name: Test
-        run: cargo test --release --workspace --features full --target wasm32-unknown-unknown
+        run: cargo test --locked --release --workspace --features full --target ${{ matrix.target }}
+  release:
+    if: ${{ github.event_name == 'release' && github.event.action == 'created' || github.event_name == 'workflow_dispatch' }}
+    env:
+      IS_PRERELEASE: ${{ github.event.release.prerelease || github.event_name == 'workflow_dispatch' && github.event.inputs.prerelease }} 
+    permissions:
+      contents: read
+      deployments: write
+      id-token: write
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - 
+        name: Checkout
+        uses: actions/checkout@v4
+      - 
+        name: setup rustup
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          cache-key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          cache-workspaces: true
+          target: wasm32-unknown-unknown
+      - 
+        name: build
+        run: cargo build -r --locked --workspace -F app --target wasm32-unknown-unknown
+      - 
+        name: Include Release Artifacts
+        uses: softprops/action-gh-release@v2
+        with:
+          append_body: false
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ env.IS_PRERELEASE }}
+          name: ${{ github.event.release.name }}
+          tag_name: ${{ github.event.release.tag_name }}
+          body: |
+            # ${{ github.event.repository.name }} (${{ github.event.release.tag_name }})
+
+            ## Release Notes
+            
+            ${{ github.event.release.body }}
+
+            ## Artifacts
+            
+          files: |
+            target/release/wasm32-unknown-unknown/template_rs_cloudflare
+            target/release/wasm32-unknown-unknown/template_rs_cloudflare.wasm

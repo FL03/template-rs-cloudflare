@@ -1,7 +1,7 @@
 [package]
 authors = [
-    "FL03 <jo3mccain@icloud.com>",
-    "Scattered-Systems, LLC <support@scsys.io>"
+    "FL03 <j3mccain@gmail.com>",
+    "Scattered-Systems <support@scsys.io>"
 ]
 default-run = "rscloud"
 description = "A template worker application for Clouflare Workers"
@@ -9,10 +9,11 @@ edition = "2024"
 keywords = ["axum", "cloudflare", "template", "wasm"]
 license = "Apache-2.0"
 name = "template-rs-cloudflare"
-publish = true
+publish = false
 readme = "README.md"
 repository = "https://github.com/FL03/template-rs-cloudflare.git"
 resolver = "3"
+rust-version = "1.86"
 version = "0.0.0"
 
 [package.metadata.docs.rs]
@@ -40,13 +41,14 @@ test = true
 
 [features]
 default = [
-    "json",
     "time",
 ]
 
 full = [
     "default",
     "chrono",
+    "config",
+    "tokio",
     "tower",
     "tracing",
     "uuid",
@@ -55,13 +57,13 @@ full = [
 app = [
     "cf",
     "full",
-    "wasm",
 ]
 
 # ************* [FF:Dependencies] *************
 cf = [
     "dep:worker",
     "dep:worker-macros",
+    "wasm",
 ]
 
 chrono = ["dep:chrono"]
@@ -74,11 +76,6 @@ http1 = [
 
 http2 = [
     "axum/http2"
-]
-
-json = [
-    "dep:serde_json",
-    "axum/json",
 ]
 
 time = ["dep:time"]
@@ -109,13 +106,13 @@ wasm = [
 [dependencies]
 config = { optional = true, version = "0.15" }
 # api
-axum = { default-features = false, features = ["macros"], version = "0.8" }
+axum = { default-features = false, features = ["json", "macros"], version = "0.8" }
 tokio = { features = [], optional = true, version = "1" }
 # data & serialization
 bytes = { features = ["serde"], version = "1" }
 serde = { features = ["derive"], version = "1" }
 serde_derive = { version = "1" }
-serde_json = { optional = true, version = "1" }
+serde_json = { version = "1" }
 # error handling
 anyhow ={ version = "1" }
 thiserror = { version = "2" }

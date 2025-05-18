@@ -1,6 +1,5 @@
 name: release
 
-
 concurrency:   
   cancel-in-progress: false
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -14,60 +13,25 @@ on:
   release:
     types: [ published ]
   repository_dispatch:
-    types: [ release, crates-io ]
+    types: [ release ]
   workflow_dispatch:
     inputs:
-      publish:
-        description: 'Publish to crates.io?'
-        required: true
-        default: false
-        type: boolean
       prerelease:
         description: 'Is this a pre-release?'
         required: true
         default: false
         type: boolean
 
-permissions:
-  checks: read
-  contents: read
-  deployments: write
-  packages: write
-  id-token: write
 
 jobs:
-  crates-io:
-    if: github.event_name == 'repository_dispatch' && github.event.action == 'crates-io' || github.event_name == 'workflow_dispatch' && github.event.inputs.publish == 'true'
-    permissions:
-      contents: read
-      packages: write
-      deployments: write
-    env:
-      CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-    strategy:
-      max-parallel: 1
-      fail-fast: false
-      matrix:
-        package: [ template-rs-cloudflare ]
-    runs-on: ubuntu-latest
-    steps:
-      - 
-        name: Checkout
-        uses: actions/checkout@v4
-      - 
-        name: Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
-        with:
-          cache-key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-          cache-workspaces: true
-      - 
-        name: Publish (${{ matrix.package }})
-        run: cargo publish --locked --all-features --package ${{ matrix.package }}
   release:
-    if: github.event_name == 'repository_dispatch' && github.event.action == 'release' || github.event_name == 'workflow_dispatch' && github.event.inputs.publish == 'false'
+    if: ${{ github.event_name == 'release' && github.event.action == 'published' || github.event_name == 'repository_dispatch' && github.event.action == 'release' || github.event_name == 'workflow_dispatch' }}
     env:
       IS_PRERELEASE: ${{ github.event.release.prerelease || github.event_name == 'workflow_dispatch' && github.event.inputs.prerelease }} 
-    permissions: write-all
+    permissions:
+      contents: read
+      deployments: write
+      id-token: write
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
@@ -82,9 +46,7 @@ jobs:
         with:
           cache-key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           cache-workspaces: true
-      - 
-        name: cache
-        uses: Swatinem/rust-cache@v2
+          target: wasm32-unknown-unknown
       - 
         name: build
         run: cargo build -r --locked --workspace -F app --target wasm32-unknown-unknown
@@ -108,4 +70,6 @@ jobs:
             ## Artifacts
             
           files: |
-            target/release/proton
+            target/release/wasm32-unknown-unknown/template_rs_cloudflare
+            target/release/wasm32-unknown-unknown/template_rs_cloudflare.wasm
+
