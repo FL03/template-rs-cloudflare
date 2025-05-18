@@ -141,6 +141,8 @@ uuid = [
 wasi = []
 
 wasm = [
+    "chrono?/wasmbind",
+    "time?/wasm-bindgen",
     "uuid?/js",
 ]
 
@@ -176,7 +178,7 @@ smart-default = { version = "0.7" }
 strum = { features = ["derive"], version = "0.27" }
 # time
 chrono = { features = ["serde"], optional = true, version = "0.4" }
-time = { features = ["serde"], optional = true, version = "0.3" }
+time = { features = ["macros", "serde"], optional = true, version = "0.3" }
 # cloudflare
 worker = { features = ["axum", "http"], optional = true, version = "0.5" }
 worker-macros = { features = ["http"], optional = true, version = "0.5" }
