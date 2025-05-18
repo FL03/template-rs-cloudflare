@@ -38,7 +38,6 @@ permissions:
 
 jobs:
   preview:
-    if: github.env.STAGE == 'Preview' || github.event_name == 'release' && github.event.action == 'prereleased'
     environment: 
       name: Preview
       url: ${{ steps.deploy.outputs.deployment-url }}
