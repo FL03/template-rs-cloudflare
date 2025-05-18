@@ -2,14 +2,14 @@
     Appellation: message <module>
     Contrib: FL03 <jo3mccain@icloud.com>
 */
-use crate::Timestamp;
+use crate::{Id, Timestamp};
 
 #[derive(
     Clone, Default, Eq, Hash, Ord, PartialEq, PartialOrd, serde::Deserialize, serde::Serialize,
 )]
 #[serde(default)]
 pub struct Message<T = String> {
-    id: String,
+    id: Id,
     message: String,
     timestamp: Timestamp,
     data: Option<T>,
@@ -18,7 +18,7 @@ pub struct Message<T = String> {
 impl<T> Message<T> {
     pub fn new(message: impl ToString, data: Option<T>) -> Self {
         Self {
-            id: crate::generate_id(),
+            id: Id::generate(),
             data,
             message: message.to_string(),
             timestamp: crate::systime(),
@@ -59,7 +59,7 @@ impl<T> Message<T> {
     }
 
     pub fn set_id(&mut self, id: impl ToString) -> &mut Self {
-        self.id = id.to_string();
+        self.id.set(id.to_string());
         self.on_update()
     }
 
