@@ -31,17 +31,17 @@ RUN --mount=type=cache,target=/workspace/target/ \
 # production-base: use the scratch image to run the application
 FROM scratch AS prod-base
 # copy the binary to the system
-COPY --from=builder --chown=auser:agroup /app/target/wasm32-unknown-unknown/release/rscloud /opt/rscloud
+COPY --from=builder /app/target/wasm32-unknown-unknown/release/rscloud /app
 # copy the configuration files
-COPY --from=builder --chown=auser:agroup --chmod=755 --link /app/.config /opt/rscloud/.config
-COPY --from=builder --chown=auser:agroup --chmod=755 --link /app/*.config.toml* /opt/rscloud/.config/*.config.toml*
+COPY --from=builder --link /app/.config /app/.config
+COPY --from=builder --link /app/*.config.toml* /app/.config/*.config.toml*
 # ************** STAGE 3 **************
 # production: Final image to run the application
 FROM prod-base AS prod
 # switch the working directory
-WORKDIR /opt/rscloud
+WORKDIR /app
 # declare some environment variables
-ENV APP_CONFIG_DIR=".config" \
+ENV APP_CONFIG_DIR="/app/.config" \
     APP_MODE="release" \
     APP_HOST="0.0.0.0" \
     APP_PORT=8080 \

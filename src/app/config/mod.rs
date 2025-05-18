@@ -4,10 +4,22 @@
 */
 
 #[doc(inline)]
-pub use self::{context::ApiContext, settings::ApiSettings, types::prelude::*};
+pub use self::{context::ApiContext, services::*, settings::ApiSettings, types::prelude::*};
 
 pub mod context;
-pub mod settings;
+pub(crate) mod settings;
+
+pub mod services {
+    #[doc(inline)]
+    pub use self::prelude::*;
+
+    pub mod database;
+
+    pub(crate) mod prelude {
+        #[doc(inline)]
+        pub use super::database::*;
+    }
+}
 
 pub mod types {
     #[doc(inline)]
@@ -30,6 +42,8 @@ pub mod types {
 pub(crate) mod prelude {
     #[doc(inline)]
     pub use super::context::*;
+    #[doc(inline)]
+    pub use super::services::prelude::*;
     #[doc(inline)]
     pub use super::settings::*;
     #[doc(inline)]
