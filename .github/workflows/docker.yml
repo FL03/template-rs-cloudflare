@@ -132,12 +132,12 @@ jobs:
           platforms: ${{ env.CONTAINER_PLATFORMS }}
           tags: ${{ steps.metadata.outputs.tags }}
   attestation:
-    needs: [ native, wasm ]
-    continue-on-error: true
+    needs: [ wasm ]
     runs-on: ubuntu-latest
     steps:
       - 
         id: attestation
+        continue-on-error: true
         name: Create Attestation
         uses: actions/attest-build-provenance@v2
         with:

@@ -10,17 +10,21 @@ command = "cargo install -q worker-build && worker-build --locked --release --fe
 [observability.logs]
 enabled = true
 
-[route]
+[[routes]]
+custom_domain = true
 pattern = "worker.scsys.io"
 zone_name = "scsys.io"
 
-# ************* [Environments] *************
-[env.staging]
-name = "worker-staging"
-
-[env.staging.route]
-pattern = "stag.scsys.io"
+[[routes]]
+pattern = "worker.scsys.io/api/*"
 zone_name = "scsys.io"
+
+# ************* [Environments] *************
+[env.production]
+name = "production"
+
+[env.preview]
+name = "preview"
 
 # ************* [Variables] *************
 [vars]
