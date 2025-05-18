@@ -72,7 +72,7 @@ jobs:
         with:
           push: true
           context: .
-          file: ./.docker/native.dockerfile
+          file: ./.docker/Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -102,9 +102,7 @@ jobs:
           images: ${{ vars.DOCKERHUB_USERNAME }}/${{ env.CONTAINER_IMAGE_NAME }}
           tags: |
             type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=sha
+            wasm
       -
         name: Setup QEMU
         uses: docker/setup-qemu-action@v3

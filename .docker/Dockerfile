@@ -10,8 +10,7 @@ RUN apt-get update -y && \
     apt-get upgrade -y
 # install the required system dependencies
 RUN apt-get install -y \
-    libssl-dev \
-    libsqlite3-dev 
+    clang 
 # update any toolchains
 RUN rustup update
 # ************** STAGE 1 **************
