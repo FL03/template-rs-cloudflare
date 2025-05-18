@@ -54,6 +54,9 @@ jobs:
           cache-key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
           cache-workspaces: true
           target: wasm32-unknown-unknown
+      - 
+        name: Setup cargo-binstall
+        uses: cargo-bins/cargo-binstall@main
       -
         name: Setup Node.js
         uses: actions/setup-node@v3
@@ -61,10 +64,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
       -
-        name: Install prerequisites
-        run: |
-          cargo install cargo-binstall
-          cargo binstall -y wasm-pack worker-build
+        name: Install required tools
+        run: cargo binstall -y wasm-pack worker-build
       - 
         name: Build & Deploy Worker
         uses: cloudflare/wrangler-action@v3

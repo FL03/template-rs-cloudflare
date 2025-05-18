@@ -1,7 +1,7 @@
 # template-rs-cloudflare
 
-[![clippy](https://github.com/FL03/pzzld-server/actions/workflows/clippy.yml/badge.svg)](https://github.com/FL03/template-rs-cloudflare/actions/workflows/clippy.yml)
-[![rust](https://github.com/FL03/pzzld-server/actions/workflows/rust.yml/badge.svg)](https://github.com/FL03/template-rs-cloudflare/actions/workflows/rust.yml)
+[![deploy](https://github.com/FL03/template-rs-cloudflare/actions/workflows/clippy.yml/badge.svg)](https://github.com/FL03/template-rs-cloudflare/actions/workflows/clippy.yml)
+[![rust](https://github.com/FL03/template-rs-cloudflare/actions/workflows/rust.yml/badge.svg)](https://github.com/FL03/template-rs-cloudflare/actions/workflows/rust.yml)
 
 ***
 
@@ -27,21 +27,29 @@ cd template-rs-cloudflare
 #### _Building the project_
 
 ```bash
-cargo build --all-features -r -v --workspace
+cargo build --workspace --release -F full,cf --target wasm32-unknown-unknown
 ```
 
 #### _Running tests_
 
 ```bash
-cargo test --all-features -r -v --workspace
+cargo test --workspace --release -F full,cf --target wasm32-unknown-unknown
 ```
 
 ## Usage
 
-### Installation
+### Pre-requisites
+
+For convenience, we recommend using [cargo-binstall](https://github.com/cargo-bins/cargo-binstall) to install rust binaries. You can install it with the following command:
 
 ```bash
-cargo install --locked wasm-pack worker-build
+cargo install cargo-binstall
+```
+
+Once you have `cargo-binstall` installed, you can install the required packages with the following command:
+
+```bash
+cargo binstall -y wasm-pack worker-build
 ```
 
 ### Running the server
