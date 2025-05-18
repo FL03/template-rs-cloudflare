@@ -765,6 +765,7 @@ dependencies = [
  "pin-project-lite",
  "smallvec",
  "tokio",
+ "tracing",
 ]
 
 [[package]]
@@ -781,6 +782,7 @@ dependencies = [
  "pin-project-lite",
  "tokio",
  "tower-service",
+ "tracing",
 ]
 
 [[package]]
@@ -1863,6 +1865,7 @@ dependencies = [
  "tokio",
  "tower-layer",
  "tower-service",
+ "tracing",
 ]
 
 [[package]]
