@@ -112,7 +112,6 @@ tokio = [
     "dep:tokio",
     "tokio?/macros",
     "tokio?/sync",
-    "tokio?/time",
 ]
 
 tower = [
