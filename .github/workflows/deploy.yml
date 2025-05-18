@@ -62,6 +62,7 @@ jobs:
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           wranglerVersion: ${{ env.WRANGLER_VERSION }}
+          environment: 'preview'
   production:
     if: github.event_name == 'release' && github.event.action == 'released' || github.env.STAGE == 'Production'
     runs-on: ubuntu-latest
@@ -88,3 +89,4 @@ jobs:
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           wranglerVersion: ${{ env.WRANGLER_VERSION }}
+          environment: 'production'
