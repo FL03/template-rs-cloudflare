@@ -21,7 +21,7 @@ impl<T> Message<T> {
             id: Id::generate(),
             data,
             message: message.to_string(),
-            timestamp: crate::systime(),
+            timestamp: crate::timestamp(),
         }
     }
     /// returns a new instance constructed from the given message
@@ -74,7 +74,7 @@ impl<T> Message<T> {
     }
 
     pub(crate) fn on_update(&mut self) -> &mut Self {
-        self.set_timestamp(crate::systime());
+        self.set_timestamp(crate::timestamp());
         self
     }
 }

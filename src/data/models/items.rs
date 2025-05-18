@@ -27,7 +27,7 @@ pub struct ItemModel {
 impl ItemModel {
     pub fn new() -> Self {
         let id = crate::generate_id();
-        let created_at = crate::systime();
+        let created_at = crate::timestamp();
         Self {
             id,
             description: String::new(),

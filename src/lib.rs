@@ -67,7 +67,7 @@ pub mod types {
         /// [`Body`](axum::body::Body) type
         pub type BodyResponse = axum::http::Response<axum::body::Body>;
         /// a type alias for a numerical timestamp
-        pub type Timestamp = u128;
+        pub type Timestamp = i64;
         /// a type alias for all model IDs
         pub type ItemId = String;
         /// a type alias for database-compatible timestamps
