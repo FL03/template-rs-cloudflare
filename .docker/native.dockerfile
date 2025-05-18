@@ -26,7 +26,7 @@ ADD . .
 # build the project
 RUN --mount=type=cache,target=/workspace/target/ \
     --mount=type=cache,target=/usr/local/cargo/registry/ \
-    cargo build --locked --release --workspace --features full,native
+    cargo build --locked --release --workspace --features native
 # ************** STAGE 2 **************
 # production-base: use the scratch image to run the application
 FROM debian:bookworm-slim AS prod-base
