@@ -18,15 +18,14 @@
 **/.cache/
 
 # Configuration Files
-**/.config/
-**/.config/*.config.*
-**/.config/*.toml
+**/.config/*
 
 **/*.env
 **/*.env.*
 
 ### Exceptions
-!**/default.config.*
+!**/.config/default.config.*
+!**/.config/example.config.*
 
 !**/example.env.*
 !**/*.env.example
