@@ -19,12 +19,6 @@ on:
   push:
     branches: [ main, master ]
     tags: [ v*.*.*, "*-alpha", "*-beta", "*-canary", "*-nightly" ]
-    paths:
-      - bin/*
-      - src/*
-      - Cargo.*
-      - wrangler.toml
-      - .github/workflows/deploy.yml
   release:
     types: [ prereleased, released ]
   repository_dispatch:
