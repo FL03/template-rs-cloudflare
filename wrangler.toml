@@ -5,7 +5,7 @@ name = "template-rs-cloudflare"
 workers_dev = false
 
 [build]
-command = "cargo binstall -y worker-build && worker-build --release --features full,cf"
+command = "cargo install -q worker-build && worker-build --release --features full,cf"
 
 [observability.logs]
 enabled = true

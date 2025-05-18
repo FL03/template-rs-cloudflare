@@ -11,8 +11,8 @@ env:
 
 on:
   pull_request:
+    branches: [ main, master ]
     types: [ opened, reopened, synchronize ]
-    branches: [ main ]
   push:
     tags: [ v*.*.*, "*-nightly" ]
   repository_dispatch:

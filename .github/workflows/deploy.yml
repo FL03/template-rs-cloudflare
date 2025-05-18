@@ -34,7 +34,9 @@ on:
 
 jobs:
   cloudflare:
-    environment: ${{ github.event.inputs.environment }}
+    environment: 
+      name: ${{ github.event.inputs.environment }}
+      url: ${{ steps.deploy.outputs.deployment-url }}
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
@@ -57,12 +59,7 @@ jobs:
           cache-workspaces: true
           target: wasm32-unknown-unknown
       - 
-        name: Setup cargo-binstall
-        uses: cargo-bins/cargo-binstall@main
-      -
-        name: Install required tools
-        run: cargo binstall -y wasm-pack worker-build
-      - 
+        id: deploy
         name: Build & Deploy Worker
         uses: cloudflare/wrangler-action@v3
         with:

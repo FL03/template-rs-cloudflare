@@ -57,6 +57,12 @@ jobs:
           cache-workspaces: true
           target: ${{ matrix.target }}
       - 
+        name: Setup cargo-binstall
+        uses: cargo-bins/cargo-binstall@main
+      -
+        name: Install required tools
+        run: cargo binstall -y wasm-pack worker-build
+      - 
         name: Build
         run: cargo build --locked --release --workspace --all-features --target ${{ matrix.target }}
       - 
