@@ -132,7 +132,7 @@ jobs:
           platforms: ${{ env.CONTAINER_PLATFORMS }}
           tags: ${{ steps.metadata.outputs.tags }}
   attestation:
-    needs: [ wasm ]
+    needs: [ native ]
     runs-on: ubuntu-latest
     steps:
       - 
@@ -142,5 +142,5 @@ jobs:
         uses: actions/attest-build-provenance@v2
         with:
           push-to-registry: false
-          subject-digest: ${{ needs.wasm.outputs.digest }}
-          subject-name: ${{ env.CONTAINER_IMAGE_NAME }}:web-${{ needs.wasm.outputs.version }}
+          subject-digest: ${{ needs.native.outputs.digest }}
+          subject-name: ${{ env.CONTAINER_IMAGE_NAME }}:native-${{ needs.native.outputs.version }}
