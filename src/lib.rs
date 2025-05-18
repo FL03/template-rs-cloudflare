@@ -20,23 +20,16 @@ pub(crate) mod macros {
 /// re-import commonly used traits, primitives, etc. from the various submodules
 #[doc(inline)]
 pub use self::{
-    app::{api, ApiContext, ApiSettings, Platform},
+    app::{ApiContext, ApiSettings, Platform, api},
     error::*,
     primitives::*,
     types::prelude::*,
     utils::prelude::*,
 };
 
-#[doc(inline)]
-#[cfg(feature = "cf")]
-pub use self::cloudflare::*;
-
 pub mod app;
 pub mod data;
 pub mod error;
-
-#[cfg(feature = "cf")]
-pub mod cloudflare;
 
 pub(crate) mod primitives {
     #[doc(inline)]
@@ -113,4 +106,21 @@ pub mod prelude {
     pub use crate::types::prelude::*;
     #[doc(no_inline)]
     pub use crate::utils::prelude::*;
+}
+
+/// the primary entry point for the worker
+#[cfg(feature = "cf")]
+#[worker::event(fetch)]
+pub async fn fetch(
+    req: worker::HttpRequest,
+    _env: worker::Env,
+    _ctx: worker::Context,
+) -> worker::Result<axum::http::Response<axum::body::Body>> {
+    use tower_service::Service;
+    #[cfg(feature = "console_error_panic_hook")]
+    console_error_panic_hook::set_once();
+    // create the service future
+    let service = crate::api().call(req);
+    // return the response
+    Ok(service.await?)
 }

@@ -64,6 +64,7 @@ native = [
 
 web = [
     "cf",
+    "console_error_panic_hook",
     "full",
     "wasm",
 ]
@@ -164,6 +165,7 @@ tracing-subscriber = { features = ["env-filter", "fmt"], optional = true, versio
 # randomization
 uuid = { features = ["serde"], optional = true, version = "1" }
 # middleware & networking
+futures = { version = "0.3" }
 hyper = { optional = true, version = "1" }
 hyper-util = { optional = true, version = "0.1" }
 tower = { optional = true, version = "0.5" }

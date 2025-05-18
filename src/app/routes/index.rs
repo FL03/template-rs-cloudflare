@@ -3,21 +3,23 @@
     Contrib: FL03 <jo3mccain@icloud.com>
 */
 use crate::Message;
-use axum::response::Html;
+use axum::response::{Html, Json};
 use axum::routing::get;
-use axum::{Json, Router};
 
 /// the base router for the api;
-pub fn router() -> Router {
-    Router::new()
+pub fn router() -> axum::Router {
+    axum::Router::new()
         .route("/", get(root))
         .route("/docs", get(docs))
+        .route("/test", get(test))
 }
 
-async fn root() -> Json<Message> {
+async fn root() -> String {
+    String::from("Hello, World!")
+}
+
+async fn test() -> Json<Message> {
     let message = Message::from_message("Hello, World!");
-    #[cfg(feature = "cf")]
-    worker::console_log!("{message}");
     Json(message)
 }
 
