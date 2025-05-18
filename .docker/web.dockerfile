@@ -31,7 +31,7 @@ RUN cargo build -r --target wasm32-unknown-unknown -p template-rs-cloudflare --l
 # production-base: use the scratch image to run the application
 FROM scratch AS prod-base
 # copy the binary to the system
-COPY --from=builder /app/target/wasm32-unknown-unknown/release/template_rs_cloudflare.wasm /app
+COPY --from=builder /app/target/wasm32-unknown-unknown/release/templated /app
 # copy the config directory
 COPY --from=builder --link /app/.config /app/.config
 # ************** STAGE 3 **************
