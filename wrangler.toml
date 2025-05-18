@@ -2,7 +2,12 @@ compatibility_date = "2025-05-16"
 compatibility_flags = [ "nodejs_compat" ]
 main = "build/worker/shim.mjs"
 name = "template-rs-cloudflare"
-workers_dev = false
+# enable the *.workers.dev endpoint for the project
+workers_dev = true
+
+[assets]
+binding = "ARTIFACTS"
+directory = "build"
 
 [build]
 command = "cargo install -q worker-build && worker-build --locked --release --features web"
@@ -10,28 +15,27 @@ command = "cargo install -q worker-build && worker-build --locked --release --fe
 [observability.logs]
 enabled = true
 
+# ************* [Variables] *************
+
+[vars]
+RUST_BACKTRACE = 1
+RUST_LOG="rscloud=debug,info"
+
+# ************* [routes] *************
+
 [[routes]]
 custom_domain = true
 pattern = "worker.scsys.io"
 zone_name = "scsys.io"
 
-
 # ************* [Environments] *************
+
 [env.production]
 name = "production"
 routes = [
   { pattern = "worker.scsys.io/*", zone_name = "scsys.io" },
-  "template-rs-cloudflare-scsys.workers.dev",
+  "template-rs-cloudflare-scsys.workers.dev/**",
 ]
 
 [env.preview]
 name = "preview"
-routes = [
-  { pattern = "worker-dev.scsys.io/*", zone_name = "scsys.io" },
-  "*-template-rs-cloudflare-scsys.workers.dev/*",
-]
-
-# ************* [Variables] *************
-[vars]
-RUST_BACKTRACE = 1
-RUST_LOG="rscloud::worker=debug,info"
