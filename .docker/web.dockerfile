@@ -5,9 +5,12 @@ ARG RUST_VERSION=latest
 # ************** STAGE 0 **************
 # builder-base: a base image for the build-stage(s)
 FROM rust:${RUST_VERSION} AS builder-base
-# update and upgrade the system
+# update and upgrade the system packages
 RUN apt-get update -y && \
     apt-get upgrade -y
+# install the required packages
+RUN apt-get install -y \
+    clang
 # ************** STAGE 1 **************
 # builder: build the project using the builder-base image
 FROM builder-base AS builder
