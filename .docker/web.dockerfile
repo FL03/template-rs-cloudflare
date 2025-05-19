@@ -15,7 +15,7 @@ RUN apt-get install -y \
 # builder: build the project using the builder-base image
 FROM builder-base AS builder
 # add additional targets for rustup
-RUN rustup target add wasm32-unknown-unknown --toolchain stable
+RUN rustup target add wasm32-unknown-unknown wasm32-wasip1 wasm32-wasip2 --toolchain stable
 # declare some environment variables
 ENV RUST_BACKTRACE=1 \
     CARGO_NET_GIT_FETCH_WITH_CLI=true \
@@ -28,15 +28,14 @@ ADD . .
 # build the project
 RUN cargo build \
     --release \
-    --target wasm32-unknown-unknown \
+    --target wasm32-wasip2 \
     --package template-rs-cloudflare \
-    --lib \
     --features web
 # ************** STAGE 2 **************
 # production-base: use the scratch image to run the application
 FROM scratch AS prod-base
 # copy the wasm modules to the image
-COPY --from=builder /app/target/wasm32-unknown-unknown/release/templated.wasm /app/templated.wasm
+COPY --from=builder /app/target/wasm32-wasip2/release/templated.wasm /app/templated.wasm
 # copy the config directory
 COPY --from=builder --link /app/.config /app/.config
 # ************** STAGE 3 **************

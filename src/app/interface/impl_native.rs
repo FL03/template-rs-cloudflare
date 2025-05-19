@@ -11,9 +11,7 @@ impl Platform {
     where
         A: ToSocketAddrs,
     {
-        let rt = tokio::runtime::Builder::new_current_thread()
-            .enable_all()
-            .build()?;
+        let rt = self.runtime()?;
         // log the event
         #[cfg(feature = "tracing")]
         tracing::trace!("registering the application with the runtime...");

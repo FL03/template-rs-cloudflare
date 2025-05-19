@@ -35,8 +35,6 @@ required-features = ["native"]
 [lib]
 bench = false
 crate-type = ["cdylib", "rlib"]
-name = "templated"
-path = "src/lib.rs"
 doctest = false
 test = true
 
@@ -50,6 +48,7 @@ full = [
     "default",
     "chrono",
     "config",
+    "hyper",
     "tokio",
     "tower",
     "tracing-subscriber",
@@ -64,7 +63,6 @@ native = [
 
 web = [
     "cf",
-    "console_error_panic_hook",
     "full",
     "wasm",
 ]
@@ -102,6 +100,10 @@ hyper = [
     "dep:hyper-util",
 ]
 
+multi-thread = [
+    "tokio?/rt-multi-thread",
+]
+
 ws = [
     "axum/ws",
 ]
@@ -110,8 +112,11 @@ time = ["dep:time"]
 
 tokio = [
     "dep:tokio",
+    "tokio?/io-util",
     "tokio?/macros",
+    "tokio?/rt",
     "tokio?/sync",
+    "tokio?/time"
 ]
 
 tower = [
@@ -143,6 +148,7 @@ uuid = [
 wasi = []
 
 wasm = [
+    "console_error_panic_hook",
     "chrono?/wasmbind",
     "time?/wasm-bindgen",
     "uuid?/js",

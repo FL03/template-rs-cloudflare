@@ -111,16 +111,12 @@ pub mod prelude {
 /// the primary entry point for the worker
 #[cfg(feature = "cf")]
 #[worker::event(fetch)]
-pub async fn fetch(
+pub async fn main(
     req: worker::HttpRequest,
     _env: worker::Env,
     _ctx: worker::Context,
 ) -> worker::Result<axum::http::Response<axum::body::Body>> {
     use tower_service::Service;
-    #[cfg(feature = "console_error_panic_hook")]
-    console_error_panic_hook::set_once();
-    // create the service future
-    let service = crate::api().call(req);
     // return the response
-    Ok(service.await?)
+    Ok(crate::api().call(req).await?)
 }

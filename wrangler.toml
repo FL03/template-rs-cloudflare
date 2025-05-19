@@ -10,7 +10,9 @@ binding = "ARTIFACTS"
 directory = "build"
 
 [build]
-command = "cargo install -q worker-build && worker-build --locked --release --features web"
+command = "npm run worker:build"
+
+
 
 [observability.logs]
 enabled = true

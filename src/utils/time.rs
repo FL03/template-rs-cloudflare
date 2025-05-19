@@ -3,9 +3,9 @@
   Contrib: @FL03
 */
 
-#[cfg(not(feature = "wasm"))]
 /// [systime] is a method that returns the current time, in milliseconds, using the
 /// [`SystemTime`](std::time::SystemTime) API.
+#[cfg(not(any(feature = "wasm", target_arch = "wasm32")))]
 #[inline]
 pub fn systime() -> u128 {
     std::time::SystemTime::now()
@@ -15,7 +15,8 @@ pub fn systime() -> u128 {
 }
 
 #[inline]
+/// the [`timestamp`] method returns a numerical reprsentation of the current time, in
+/// milliseconds.
 pub fn timestamp() -> crate::Timestamp {
-    chrono::Utc::now()
-        .timestamp_millis()
+    chrono::Utc::now().timestamp_millis()
 }

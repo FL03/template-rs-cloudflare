@@ -2,7 +2,7 @@
     Appellation: main <module>
     Contrib: @FL03
 */
-use templated::Platform;
+use template_rs_cloudflare::Platform;
 
 fn main() -> anyhow::Result<()> {
     // initialize the tracer

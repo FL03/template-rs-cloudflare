@@ -22,11 +22,6 @@ pub fn api() -> Router {
         .layer(tower_http::trace::TraceLayer::new(
             tower_http::classify::StatusInRangeAsFailures::new(400..=599).into_make_classifier(),
         ))
-        .layer(
-            tower_http::cors::CorsLayer::new()
-                .allow_origin(tower_http::cors::Any)
-                .allow_methods(tower_http::cors::Any),
-        )
 }
 
 /// [`v0`] captures all of the api routes for v0;

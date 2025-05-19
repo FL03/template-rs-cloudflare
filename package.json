@@ -19,15 +19,15 @@
   },
   "version": "0.0.0",
   "scripts": {
-    "setup": "npm run cargo:setup",
+    "preinstall": "npm run cargo:setup",
     "build": "npm run worker:build",
     "deploy": "npm run cf:deploy",
     "dev": "npm run cf:dev",
-    "cargo:setup": "cargo install cargo-binstall && cargo binstall wasm-pack worker-build -y",
+    "cargo:setup": "cargo install worker-build",
     "cf:build": "npx wrangler@latest build",
     "cf:deploy": "npx wrangler@latest deploy",
     "cf:dev": "npx wrangler@latest dev",
-    "wasm-pack:build": "npx wasm-pack build --target web --release -d .artifacts/build/js --features app",
-    "worker:build": "worker-build --release --features app"
+    "wasm-pack:build": "npx wasm-pack build --target web --release -d .artifacts/build/js --features web",
+    "worker:build": "worker-build --release --features web"
   }
 }

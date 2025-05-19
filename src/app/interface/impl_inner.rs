@@ -42,4 +42,10 @@ impl PlatformInner {
     pub fn with_ctx(self, ctx: ApiContext) -> Self {
         Self { ctx, ..self }
     }
+    /// creates a new custom runtime for the platform
+    pub fn runtime(&self) -> Result<tokio::runtime::Runtime, std::io::Error> {
+        tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+    }
 }

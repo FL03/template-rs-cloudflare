@@ -54,7 +54,6 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=sha  
       -
         name: Setup QEMU
         uses: docker/setup-qemu-action@v3
@@ -118,7 +117,6 @@ jobs:
             type=semver,pattern={{prefix}}-{{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=sha  
             wasm
       -
         id: builder
@@ -132,7 +130,7 @@ jobs:
           cache-to: type=gha,mode=max
           github-token: ${{ secrets.GITHUB_TOKEN }}
           labels: ${{ steps.metadata.outputs.labels }}
-          platforms: ${{ env.CONTAINER_PLATFORMS }}
+          platforms: wasi/wasm
           tags: ${{ steps.metadata.outputs.tags }}
   attestation:
     continue-on-error: true

@@ -1,4 +1,5 @@
 **/.vault/
+**/.wrangler/
 
 # Artifacts
 **/.artifacts/build/
