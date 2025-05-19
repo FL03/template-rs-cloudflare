@@ -54,6 +54,9 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha
       -
         name: Setup QEMU
         uses: docker/setup-qemu-action@v3
@@ -114,10 +117,11 @@ jobs:
             org.opencontainers.image.title=template-rs-cloudflare
             org.opencontainers.image.vendor=Scattered-Systems, LLC
           tags: |
-            type=semver,pattern={{prefix}}-{{version}}
+            type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            wasm
+            type=ref,event=branch
+            type=ref,event=pr
       -
         id: builder
         name: Build and Push (web)
