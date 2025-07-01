@@ -189,7 +189,7 @@ chrono = { features = ["serde"], optional = true, version = "0.4" }
 time = { features = ["macros", "serde"], optional = true, version = "0.3" }
 # cloudflare
 worker = { features = ["axum", "http"], optional = true, version = "0.5" }
-worker-macros = { features = ["http"], optional = true, version = "0.5" }
+worker-macros = { features = ["http"], optional = true, version = "0.6" }
 # wasm
 console_error_panic_hook = { optional = true, version = "0.1" }
 
