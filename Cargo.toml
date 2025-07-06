@@ -13,7 +13,7 @@ publish = false
 readme = "README.md"
 repository = "https://github.com/FL03/template-rs-cloudflare.git"
 resolver = "3"
-rust-version = "1.86.0"
+rust-version = "1.85.0"
 version = "0.0.0"
 
 [package.metadata.docs.rs]
@@ -188,8 +188,8 @@ strum = { features = ["derive"], version = "0.27" }
 chrono = { features = ["serde"], optional = true, version = "0.4" }
 time = { features = ["macros", "serde"], optional = true, version = "0.3" }
 # cloudflare
-worker = { features = ["axum", "http"], optional = true, version = "0.5" }
-worker-macros = { features = ["http"], optional = true, version = "0.5" }
+worker = { features = ["axum", "http"], optional = true, version = "0.6" }
+worker-macros = { features = ["http"], optional = true, version = "0.6" }
 # wasm
 console_error_panic_hook = { optional = true, version = "0.1" }
 
@@ -206,17 +206,17 @@ features = [
 [profile.dev]
 codegen-units = 16
 debug = true
-lto = true
+lto = "thin"
 opt-level = 2
 overflow-checks = true
 panic = "unwind"
-strip = true
+strip = "symbols"
 
 [profile.release]
 codegen-units = 1
 debug = false
 lto = true
-opt-level = "z"
+opt-level = 0
 overflow-checks = false
 panic = "abort"
-strip = true
+strip = "debuginfo"

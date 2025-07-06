@@ -12,8 +12,6 @@ directory = "build"
 [build]
 command = "npm run worker:build"
 
-
-
 [observability.logs]
 enabled = true
 
@@ -27,17 +25,13 @@ RUST_LOG="rscloud=debug,info"
 
 [[routes]]
 custom_domain = true
-pattern = "worker.scsys.io"
-zone_name = "scsys.io"
+pattern = "api.pzzld.org"
+zone_name = "pzzld.org"
 
 # ************* [Environments] *************
 
 [env.production]
 name = "production"
-routes = [
-  { pattern = "worker.scsys.io/*", zone_name = "scsys.io" },
-  "template-rs-cloudflare-scsys.workers.dev/**",
-]
 
 [env.preview]
 name = "preview"
